@@ -1,0 +1,49 @@
+﻿
+@model PostgresTest.ViewModels.HomeViewModel
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="row">
+    <div class="col-8">
+        @for (int i = 0; i < Model.Collections.Count; i++)
+        {
+
+            <div class="card" style="width: 18rem;">
+                <form method="get">
+                    <img src="@Model.Collections[i].Image" class="card-img-top" alt="">
+                    <div class="card-body">
+                        <h5 class="card-title">@Model.Collections[i].CollectionName</h5>
+                        <p class="card-theme">@Model.Collections[i].Theme</p>
+                        <p class="card-text">@Model.Collections[i].Description</p>
+                        <p class="card-text">@Model.Collections[i].User.UserName</p>
+                        <button asp-controller="Collection" asp-action="Index" asp-route-name="@ViewBag.Name" asp-route-id="@Model.Collections[i].Id" class="btn btn-danger">Details</button>
+                    </div>
+                </form>
+            </div>
+
+        }
+    </div>
+    <div class="col-4">
+        <table class="table table-striped">
+            <tr>
+                <th>Name</th>
+                <th>Tags</th>
+                <th>Owner</th>
+            </tr>
+            @for (int i = 0; i < Model.Items.Count; i++)
+            {
+                <tr>
+                    <td><a asp-controller="Item" asp-action="Index" asp-route-name="@ViewBag.Name" asp-route-itemId="@Model.Items[i].Id" asp-route-id="@Model.Items[i].Collection.Id">@Model.Items[i].Name</a></td>
+                    <td>
+                        @for (int j = 0; j < Model.Items[i].Tags.Count; j++)
+                        {
+                            @Model.Items[i].Tags[j].Text;
+                        }
+                    </td>
+                    <td>@Model.Items[i].Collection.User.UserName</td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>

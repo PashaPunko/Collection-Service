@@ -1,0 +1,34 @@
+﻿@model PostgresTest.ViewModels.ProfileViewModel
+@{
+    ViewBag.Title = "Список пользователей";
+}
+
+<div class="row">
+
+    @for (int i = 0; i < Model.Collections.Count; i++)
+    {
+
+        <div class="card" style="width: 18rem;">
+            <form method="get">
+                <img src="@Model.Collections[i].Image" class="card-img-top" alt="">
+                <div class="card-body">
+                    <h5 class="card-title">@Model.Collections[i].CollectionName</h5>
+                    <p class="card-theme">@Model.Collections[i].Theme</p>
+                    <p class="card-text">@Model.Collections[i].Description</p>
+                    <button asp-controller="Profile" asp-action="Delete" asp-route-name="@ViewBag.Name" asp-route-id="@Model.Collections[i].Id" class="btn btn-dark">Delete</button>
+                    <button asp-controller="Profile" asp-action="Edit" asp-route-name="@ViewBag.Name" asp-route-id="@Model.Collections[i].Id" class="btn btn-danger">Edit</button>
+                    <button asp-controller="Collection" asp-action="Index" asp-route-name="@ViewBag.Name" asp-route-id="@Model.Collections[i].Id" class="btn btn-danger">Details</button>
+                </div>
+            </form>
+        </div>
+
+    }
+    <form method="get">
+        <button asp-controller="Profile" asp-action="Create" asp-route-name="@ViewBag.Name" class="btn btn-danger">Create</button>
+    </form>
+</div>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script>
+   
+</script>

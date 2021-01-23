@@ -1,0 +1,65 @@
+﻿@model PostgresTest.Models.Collection
+@{
+    ViewBag.Title = "Список пользователей";
+}
+<div class="modal-content">
+    <form method="post" asp-controller="Profile" asp-action="Create" asp-route-name="@ViewBag.Name">
+        <div class="modal-body">
+            <div class="row mb-3 justify-content-center align-items-center">
+                <label class="col-4 control-label">Name</label>
+                <div class="col-7">
+                    <input class="form-control" placeholder="Login" asp-for="CollectionName" value="@Model.CollectionName" />
+                </div>
+            </div>
+            <div class="row mb-3 justify-content-center align-items-center">
+                <label class="col-4 control-label">Description</label>
+                <div class="col-7">
+                    <input class="form-control" placeholder="Description" asp-for="Description" value="@Model.Description" />
+                </div>
+            </div>
+            <div class="row mb-3 justify-content-center align-items-center">
+                <label class="col-4 control-label">Image</label>
+                <div class="col-7">
+                    <input class="form-control" placeholder="Image" asp-for="Image" value="@Model.Image" />
+                </div>
+            </div>
+            <div class="row mb-3 justify-content-center align-items-center">
+                <label class="col-4 control-label">Digit Fields</label>
+                <div class="col-7">
+                    <input class="form-control" placeholder="" asp-for="OptFields[0]" value="@Model.OptFields[0]" />
+                </div>
+            </div>
+            <div class="row mb-3 justify-content-center align-items-center">
+                <label class="col-4 control-label">Text Fields</label>
+                <div class="col-7">
+                    <input class="form-control" placeholder="" asp-for="OptFields[1]" value="@Model.OptFields[1]" />
+                </div>
+            </div>
+            <div class="row mb-3 justify-content-center align-items-center">
+                <label class="col-4 control-label">Line Fields</label>
+                <div class="col-7">
+                    <input class="form-control" placeholder="" asp-for="OptFields[2]" value="@Model.OptFields[2]" />
+                </div>
+            </div>
+            <div class="row mb-3 justify-content-center align-items-center">
+                <label class="col-4 control-label">Date Fields</label>
+                <div class="col-7">
+                    <input class="form-control" placeholder="" asp-for="OptFields[3]" value="@Model.OptFields[3]" />
+                </div>
+            </div>
+            <div class="row mb-3 justify-content-center align-items-center">
+                <label class="col-4 control-label">Boolean Fields</label>
+                <div class="col-7">
+                    <input class="form-control" placeholder="" asp-for="OptFields[4]" value="@Model.OptFields[4]" />
+                </div>
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <input type="submit" class="btn btn-success" value="Save" />
+            <button type="button" class="btn btn-success" onclick="window.location.href=`/Profile/Index/@ViewBag.Name`">Cancel</button>
+        </div>
+    </form>
+</div>
+<script>
+</script>

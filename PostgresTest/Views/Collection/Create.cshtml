@@ -1,0 +1,73 @@
+﻿@model PostgresTest.ViewModels.ItemViewModel
+@{
+    ViewBag.Title = "Список пользователей";
+}
+<div class="modal-content">
+    <form method="post" asp-controller="Collection" asp-action="Create" asp-route-name="@ViewBag.Name" asp-route-id="@ViewBag.CollectionId">
+        <div class="modal-body">
+            <div class="row mb-3 justify-content-center align-items-center">
+                <label class="col-4 control-label">Name</label>
+                <div class="col-7">
+                    <input class="form-control" placeholder="Login" asp-for="Item.Name" value="@Model.Item.Name" />
+                </div>
+            </div>
+            <div class="row mb-3 justify-content-center align-items-center">
+                <label class="col-4 control-label">Tags</label>
+                <div class="col-7">
+                    <input class="form-control" placeholder="Description" asp-for="TagString" value="@Model.TagString" />
+                </div>
+            </div>
+            @for (int j = 0; j < Model.optFields[0].Count; j++)
+            {
+                <div class="row mb-3 justify-content-center align-items-center">
+                    <label class="col-4 control-label">@Model.optFields[0][j]</label>
+                    <div class="col-7">
+                        <input class="form-control" placeholder="@Model.optFields[0][j]" asp-for="Item.DigitFields[j].Digit"/>
+                    </div>
+                </div>
+            }
+            @for (int j = 0; j < Model.optFields[1].Count; j++)
+            {
+                <div class="row mb-3 justify-content-center align-items-center">
+                    <label class="col-4 control-label">@Model.optFields[1][j]</label>
+                    <div class="col-7">
+                        <input class="form-control" placeholder="@Model.optFields[1][j]" asp-for="Item.TextFields[j].Text" />
+                    </div>
+                </div>
+            }
+            @for (int j = 0; j < Model.optFields[2].Count; j++)
+            {
+                <div class="row mb-3 justify-content-center align-items-center">
+                    <label class="col-4 control-label">@Model.optFields[2][j]</label>
+                    <div class="col-7">
+                        <input class="form-control" placeholder="@Model.optFields[2][j]" asp-for="Item.WordFields[j].Word"/>
+                    </div>
+                </div>
+            }
+            @for (int j = 0; j < Model.optFields[3].Count; j++)
+            {
+                <div class="row mb-3 justify-content-center align-items-center">
+                    <label class="col-4 control-label">@Model.optFields[3][j]</label>
+                    <div class="col-7">
+                        <input class="form-control" placeholder="@Model.optFields[3][j]" asp-for="Item.DateFields[j].Date"/>
+                    </div>
+                </div>
+            }
+            @for (int j = 0; j < Model.optFields[4].Count; j++)
+            {
+                <div class="row mb-3 justify-content-center align-items-center">
+                    <label class="col-4 control-label">@Model.optFields[4][j]</label>
+                    <div class="col-7">
+                        <input class="form-control" placeholder="@Model.optFields[4][j]" asp-for="Item.CheckboxFields[j].Checkbox"/>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="modal-footer">
+            <input type="submit" class="btn btn-success" value="Save" />
+            <button type="button" class="btn btn-success" onclick="window.location.href=`/Collection/Index/@ViewBag.Name/@ViewBag.CollectionId`">Cancel</button>
+        </div>
+    </form>
+</div>
+<script>
+</script>

@@ -1,0 +1,129 @@
+﻿@model PostgresTest.ViewModels.ItemViewModel
+@{
+    ViewBag.Title = "Список пользователей";
+}
+<div class="modal-content">
+        <div class="modal-body">
+            <div class="row mb-3 justify-content-center align-items-center">
+                <div class="col-3">
+                    <label >@Model.Item.Name</label>
+                </div>
+                <div class="col-6">
+                    @for (int j = 0; j < Model.Item.Tags.Count; j++)
+                    {
+                    <label>@Model.Item.Tags[j].Text</label>
+                    }
+                </div>
+                <div class="col-3">
+                    @if (Model.Item.Likes.Contains(ViewBag.Name))
+                    {
+                        <button class="btn btn-danger">Like</button>
+                    }
+                    else
+                    {
+                        <button class="btn btn-secondary">Like</button>
+                    }
+                </div>
+
+            </div>
+            <div class="row mb-3 justify-content-center align-items-center">
+                <div class="col-2">
+                    @for (int j = 0; j < Model.optFields[0].Count; j++)
+                    {
+                        <div class="row">
+                            <label>@Model.optFields[0][j]:@Model.Item.DigitFields[j].Digit</label>
+                        </div>
+                    }
+                </div>
+                <div class="col-2">
+                    @for (int j = 0; j < Model.optFields[1].Count; j++)
+                    {
+                        <div class="row">
+                            <label>@Model.optFields[1][j]:@Model.Item.TextFields[j].Text</label>
+                        </div>
+                    }
+                </div>
+                <div class="col-2">
+                    @for (int j = 0; j < Model.optFields[2].Count; j++)
+                    {
+                        <div class="row">
+                            <label>@Model.optFields[2][j]:@Model.Item.WordFields[j].Word</label>
+                        </div>
+                    }
+                </div>
+                <div class="col-2">
+                    @for (int j = 0; j < Model.optFields[3].Count; j++)
+                    {
+                        <div class="row">
+                            <label>@Model.optFields[3][j]:@Model.Item.DateFields[j].Date</label>
+                        </div>
+                    }
+                </div>
+                <div class="col-2">
+                    @for (int j = 0; j < Model.optFields[4].Count; j++)
+                    {
+                        <div class="row">
+                            <label>@Model.optFields[4][j]:@Model.Item.CheckboxFields[j].Checkbox</label>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <div class="row">
+                <label>Comments</label>
+            </div>
+            <div class="row">
+                <form method="post">
+                    <input type="text" name="message" id="messageField" />
+                    <input type="submit" value="Send" id="submitForm" />
+                </form>
+            </div>
+            <div id="chatroom"></div>
+            </div>
+        </div>
+<script src="~/js/signalr/dist/browser/signalr.min.js"></script>
+<script>
+    const hubConnection = new signalR.HubConnectionBuilder()
+        .withUrl("/comments")
+        .build();
+    hubConnection.serverTimeoutInMilliseconds = 1000 * 60 * 10;
+    let connectionId = "";
+    hubConnection.on('Notify', function (message, userName) {
+
+        let userNameElem = document.createElement("b");
+        userNameElem.appendChild(document.createTextNode(userName + ": "));
+        let elem = document.createElement("p");
+        elem.appendChild(userNameElem);
+        elem.appendChild(document.createTextNode(message));
+        document.getElementById("chatroom").appendChild(elem);
+
+    });
+    document.getElementById("submitForm")
+        .addEventListener("click", function (e) {
+            e.preventDefault();
+
+            const data = new FormData();
+            data.append("message", document.getElementById("messageField").value);
+            data.append("itemId", @Model.Item.Id);
+            fetch("/item/send", {
+                method: "POST",
+                body: data
+            })
+                .catch(error => console.error("Error: ", error));
+        });
+
+    hubConnection.start().then(() => {
+        connectionId = hubConnection.connectionId;
+        console.log(connectionId)
+        const data = new FormData();
+        data.append("connectionId", connectionId);
+        data.append("itemId", @Model.Item.Id);
+
+        fetch("/item/join", {
+            method: "POST",
+            body: data
+        })
+            .catch(error => console.error("Error: ", error));
+    });
+</script>

@@ -1,0 +1,120 @@
+﻿@model PostgresTest.ViewModels.CollectionViewModel
+@{
+    ViewBag.Title = "Список пользователей";
+}
+    <div style="overflow-x: auto">
+        <form method="get" asp-controller="Collection" asp-action="Index" asp-route-name="@ViewBag.Name" asp-route-id="@ViewBag.CollectionId">
+            <table class="table table-striped">
+                <tr>
+                    <th>
+                        Name
+                        <div class="row">
+                            <input type="text" asp-for="FilterForName.FilterText" value="@Model.FilterForName.FilterText">
+                            <button class="btn btn-success">Execute Filter</button>
+                        </div>
+                        <button class="btn btn-primary" name="sortId"
+                                value="@(Model.SortASC.Key == 1 ? Model.SortASC.Value ? new KeyValuePair<int, bool>(1, false):
+                                                                                        new KeyValuePair<int, bool>(1, true):
+                                                                                        new KeyValuePair<int, bool>(1, true))"></button>
+                    </th>
+                    <th>
+                        Tags
+                        <div class="row">
+                            <input type="text" asp-for="FilterForTags.FilterTags" value="@Model.FilterForTags.FilterTags">
+                            <button class="btn btn-success">Execute Filter</button>
+                        </div>
+                        <button class="btn btn-primary" name="sortId"
+                                value="@(Model.SortASC.Key == 2 ? Model.SortASC.Value ? new KeyValuePair<int, bool>(2, false):
+                                                                                        new KeyValuePair<int, bool>(2, true):
+                                                                                        new KeyValuePair<int, bool>(2, true))"></button>
+                    </th>
+                    @for (int j = 0; j < Model.optFields[0].Count; j++)
+                    {
+                        <th>
+                            @Model.optFields[0][j]
+                            <div class="row">
+                                <input type="text" asp-for="FilterForText[j].FilterText" value="@Model.FilterForText[j].FilterText">
+                                <button class="btn btn-success">Execute Filter</button>
+                            </div>
+                            <button class="btn btn-primary" name="sortId"
+                                    value="@(Model.SortASC.Key == 2+j+1 ? Model.SortASC.Value ? new KeyValuePair<int, bool>(2+j+1, false) :
+                                                                                     new KeyValuePair<int, bool>(2+j+1, true) :
+                                                                                     new KeyValuePair<int, bool>(2+j+1, true))"></button>
+                        </th>
+                    }
+                    @for (int j = 0; j < Model.optFields[1].Count; j++)
+                    {
+                        <th>
+                            @Model.optFields[1][j]
+                        </th>
+                    }
+                    @for (int j = 0; j < Model.optFields[2].Count; j++)
+                    {
+                        <th>
+                            @Model.optFields[2][j]
+                        </th>
+                    }
+                    @for (int j = 0; j < Model.optFields[3].Count; j++)
+                    {
+                        <th>
+                            @Model.optFields[3][j]
+                        </th>
+                    }
+                    @for (int j = 0; j < Model.optFields[4].Count; j++)
+                    {
+                        <th>
+                            @Model.optFields[4][j]
+                        </th>
+                    }
+                </tr>
+
+                    @for (int i = 0; i < Model.Items.Count; i++)
+                    {
+                        <tr>
+                            <td><a asp-controller="Item" asp-action="Index" asp-route-name="@ViewBag.Name" asp-route-itemId="@Model.Items[i].Id" asp-route-id="@ViewBag.CollectionId">>@Model.Items[i].Name</a></td>
+                            <td>
+                                @for (int j = 0; j < Model.Items[i].Tags.Count; j++)
+                                {
+                                    @Model.Items[i].Tags[j].Text;
+                                }
+                            </td>
+                            @for (int j = 0; j < Model.Items[i].DigitFields.Count; j++)
+                            {
+                                <td>@Model.Items[i].DigitFields[j].Digit</td>
+                            }
+                            @for (int j = 0; j < Model.Items[i].TextFields.Count; j++)
+                            {
+                                <td>@Model.Items[i].TextFields[j].Text</td>
+                            }
+                            @for (int j = 0; j < Model.Items[i].WordFields.Count; j++)
+                            {
+                                <td>@Model.Items[i].WordFields[j].Word</td>
+                            }
+                            @for (int j = 0; j < Model.Items[i].DateFields.Count; j++)
+                            {
+                                <td>@Model.Items[i].DateFields[j].Date</td>
+                            }
+                            @for (int j = 0; j < Model.Items[i].CheckboxFields.Count; j++)
+                            {
+                                <td>@Model.Items[i].CheckboxFields[j].Checkbox</td>
+                            }
+                            <td>
+                                <a class="btn btn-sm btn-primary" asp-action="Edit" asp-route-name="@ViewBag.Name" asp-route-itemId="@Model.Items[i].Id" asp-route-id="@ViewBag.CollectionId">Edit</a>
+                                <a class="btn btn-sm btn-danger" asp-action="Delete" asp-route-itemId="@Model.Items[i].Id" asp-route-name="@ViewBag.Name" asp-route-id="@ViewBag.CollectionId">Delete</a>
+
+                            </td>
+                        </tr>
+                    }
+                </table>
+        </form>
+</div>
+<div class="row">
+    <form method="get">
+        <button asp-action="Create" asp-route-name="@ViewBag.Name" asp-route-id="@ViewBag.CollectionId" class="btn btn-danger">Create</button>
+    </form>
+</div>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script>
+   
+</script>

@@ -1,0 +1,51 @@
+﻿@model PostgresTest.ViewModels.SigninViewModel
+<div class="row justify-content-center center-position">
+    <div class="conteiner-md justify-content-center auth-form">
+        <form method="post" asp-controller="Account" asp-action="Signin" class="justify-content-center">
+            <div class="row m-3 justify-content-center">
+                <div class="container-fluid">
+                    <h2>Sign In</h2>
+                </div>
+            </div>
+            <div asp-validation-summary="ModelOnly"></div>
+            <div class="row mb-3 justify-content-center align-items-center">
+                <label class="col-4 control-label">Name</label>
+                <div class="col-7">
+                    <input class="form-control" placeholder="Login" asp-for="Name">
+                    <span asp-validation-for="Name"></span>
+                </div>
+            </div>
+            <div class="row mb-3 justify-content-center align-items-center">
+                <label asp-for="Email" class="col-4 control-label"></label>
+                <div class="col-7">
+                    <input class="form-control" placeholder="Email" asp-for="Email">
+                    <span asp-validation-for="Email"></span>
+                </div>
+            </div>
+            <div class="row mb-3 justify-content-center align-items-center">
+                <label asp-for="Password" class="col-4 control-label"></label>
+                <div class="col-7">
+                    <input class="form-control" placeholder="Password" asp-for="Password">
+                    <span asp-validation-for="Password"></span>
+                </div>
+            </div>
+            <div class="row mb-3 justify-content-center align-items-center">
+                <label asp-for="PasswordConfirm" class="col-4 control-label"></label>
+                <div class="col-7">
+                    <input class="form-control" placeholder="PasswordConfirm" asp-for="PasswordConfirm">
+                    <span asp-validation-for="PasswordConfirm"></span>
+                </div>
+            </div>
+            <div class="row mb-3 justify-content-center align-items-center">
+                <div class="row mb-3">
+                    <a asp-controller="Account" asp-action="Login">Log In</a>
+                </div>
+            </div>
+            <div class="row mb-3 justify-content-center align-items-center">
+                <div class="col-offset-2 col-9">
+                    <button type="submit" class="btn btn-primary">Sign In</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,68 @@
+﻿@model PostgresTest.Models.Users
+@{
+    ViewBag.Title = "Список пользователей";
+}
+
+<form method="post" name="form_name" id="form_name" class="form-table">
+    <div class="tumblar">
+        <button asp-controller="Admin" asp-action="Delete" class="btn btn-dark">Delete</button>
+        <button asp-controller="Admin" asp-action="Save"  class="btn btn-success">Save</button>
+    </div>
+    <div style="overflow-x: auto">
+        <table class="table table-striped">
+            <tr>
+                <th>
+                    <lable for="main_check" id="mark" style="display:inline-block">Mark all</lable>
+                    <lable for="main_check" id="unmark" style="display:none">Unmark all</lable>
+                    <input type="checkbox" onchange="sel_all2('form_name')" name="main_check">
+                </th>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Roles</th>
+            </tr>
+            @for (int i = 0; i < Model.AllUsers.Count; i++)
+            {
+                    <tr>
+                        <td>
+                            <input type="checkbox" asp-for="AllUsers[i].IsChecked" id="cheks">
+                        </td>
+                        <td>@Model.AllUsers[i].UserId<input type="hidden" asp-for="AllUsers[i].UserId" /></td>
+                        <td><a asp-controller="Profile" asp-action="Index" asp-route-name="@Model.AllUsers[i].UserName">@Model.AllUsers[i].UserName</a></td>
+                        <td>@Model.AllUsers[i].UserEmail</td>
+                        <td>
+                            @foreach (var roles in Model.AllUsers[i].UserRoles)
+                            {
+                                if (@Model.AllUsers[i].UserRoles[roles.Key])
+                                {
+                                    <input type="checkbox" asp-for="AllUsers[i].UserRoles[roles.Key]" checked="checked" />@roles.Key<br />
+                                }
+                                else
+                                {
+                                    <input type="checkbox" asp-for="AllUsers[i].UserRoles[roles.Key]"/>@roles.Key<br />
+                                }
+
+                            }
+                        </td>
+                    </tr>
+            }
+        </table>
+    </div>
+</form>
+
+<script>
+    function sel_all2(name_of_form) {
+        document.getElementById(name_of_form).cheks.forEach(el => {
+            el.checked = document.getElementById(name_of_form).main_check.checked
+        })
+        if (document.getElementById(name_of_form).main_check.checked) {
+            document.getElementById('mark').style.display = 'none';
+            document.getElementById('unmark').style.display = 'inline-block';
+        }
+        else {
+            document.getElementById('mark').style.display = 'inline-block';
+            document.getElementById('unmark').style.display = 'none';
+            
+        }
+    }
+</script>
