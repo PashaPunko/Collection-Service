@@ -68,13 +68,13 @@ namespace PostgresTest.Controllers
             {
                 return RedirectToAction("Index", "Home");
             }
-            Collection model = new Collection();
+            CollectionCreateViewModel model = new CollectionCreateViewModel();
             ViewBag.Name = name;
             return View(model);
         }
         [Route("Create/{name}")]
         [HttpPost]
-        public async Task<IActionResult> Create( string name, Collection model)
+        public async Task<IActionResult> Create( string name, CollectionCreateViewModel model)
         {
             ViewBag.Status = await ValidateStatus();
             if (ViewBag.Status == 3 || (User.Identity.Name != name && ViewBag.Status == 2))
@@ -84,7 +84,7 @@ namespace PostgresTest.Controllers
             var user = db.Users.FirstOrDefault(user => user.UserName == name);
             model.User = user;
             model.UserId = user.Id;
-            db.Collections.Add(model);
+            db.Collections.Add((Collection)model);
             db.SaveChanges();
             return Redirect($"/Profile/Index/{name}");
         }

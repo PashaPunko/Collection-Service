@@ -35,6 +35,14 @@ namespace PostgresTest.Models
             return Text;
         }
     }
+    public class Like
+    {
+        
+        public int Id { get; set; }
+        public Item Item { get; set; }
+        public int ItemId { get; set; }
+        public string UserName { get; set; }
+    }
     public class TextField : IField<string>
     {
         public string Text { get; set; }
@@ -86,7 +94,7 @@ namespace PostgresTest.Models
         public int CollectionId { get; set; }
         public DateTime CreationTime { get; set; }
         public List<Comment> Comments { get; set; } = new List<Comment>();
-        public List<string> Likes { get; set; } = new List<string>();
+        public List<Like> Likes { get; set; } = new List<Like>();
         public List<TextField> TextFields { get; set; } = new List<TextField>();
         public List<DigitField> DigitFields { get; set; } = new List<DigitField>();
         public List<WordField> WordFields { get; set; } = new List<WordField>();
@@ -118,6 +126,7 @@ namespace PostgresTest.Models
         public DbSet<Collection> Collections { get; set; }
         public DbSet<Item> Items { get; set; }
         public DbSet<Tag> Tags { get; set; }
+        public DbSet<Like> Likes { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<TextField> TextFields { get; set; }
         public DbSet<DigitField> DigitFields { get; set; }
@@ -127,7 +136,6 @@ namespace PostgresTest.Models
         public ApplicationContext(DbContextOptions<ApplicationContext> options)
                 : base(options)
             {
-            Database.EnsureCreated();
             }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

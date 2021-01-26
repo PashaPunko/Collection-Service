@@ -4,8 +4,9 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - PostgresTest</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/js/dropzone-5.7.0/dist/min/dropzone.min.css"/>
 </head>
 <body>
     
@@ -26,10 +27,10 @@
                     <a class="btn btn-sm btn-primary" asp-controller="Profile" asp-action="Index" asp-route-name="@User.Identity.Name">Profile</a>
                     <a class="btn btn-sm btn-dark" asp-controller="Account" asp-action="Logout">Logout</a>
                 }
-                else { 
+                else
+                {
                     <a class="btn btn-sm btn-success" asp-controller="Account" asp-action="Login">Login</a>
                 }
-
             </div>
            
             @RenderBody()

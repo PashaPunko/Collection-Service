@@ -4,70 +4,115 @@
 }
     <div style="overflow-x: auto">
         <form method="get" asp-controller="Collection" asp-action="Index" asp-route-name="@ViewBag.Name" asp-route-id="@ViewBag.CollectionId">
+            <input type="hidden" asp-for="SortBy" value="@Model.SortBy" id="sort-by">
+            <input type="hidden" asp-for="SortOrder" value="@Model.SortOrder" id="sort-order">
             <table class="table table-striped">
                 <tr>
                     <th>
                         Name
                         <div class="row">
-                            <input type="text" asp-for="FilterForName.FilterText" value="@Model.FilterForName.FilterText">
-                            <button class="btn btn-success">Execute Filter</button>
+                            <input asp-for="FilterForName.FilterText" value="">
+                            <input type="submit" class="btn btn-success" value="Execute Filter">
                         </div>
-                        <button class="btn btn-primary" name="sortId"
-                                value="@(Model.SortASC.Key == 1 ? Model.SortASC.Value ? new KeyValuePair<int, bool>(1, false):
-                                                                                        new KeyValuePair<int, bool>(1, true):
-                                                                                        new KeyValuePair<int, bool>(1, true))"></button>
+                        <input type="submit" class="btn btn-primary" onclick="CreateSort(1)">
                     </th>
                     <th>
                         Tags
                         <div class="row">
-                            <input type="text" asp-for="FilterForTags.FilterTags" value="@Model.FilterForTags.FilterTags">
-                            <button class="btn btn-success">Execute Filter</button>
+                            <input asp-for="FilterForTags.FilterTags" value="@Model.FilterForTags.FilterTags">
+                            <input type="submit" class="btn btn-success" value="Execute Filter">
                         </div>
-                        <button class="btn btn-primary" name="sortId"
-                                value="@(Model.SortASC.Key == 2 ? Model.SortASC.Value ? new KeyValuePair<int, bool>(2, false):
-                                                                                        new KeyValuePair<int, bool>(2, true):
-                                                                                        new KeyValuePair<int, bool>(2, true))"></button>
-                    </th>
+                        <input type="submit" class="btn btn-primary" onclick="CreateSort(2)">
+                    </th> 
                     @for (int j = 0; j < Model.optFields[0].Count; j++)
                     {
                         <th>
                             @Model.optFields[0][j]
                             <div class="row">
-                                <input type="text" asp-for="FilterForText[j].FilterText" value="@Model.FilterForText[j].FilterText">
-                                <button class="btn btn-success">Execute Filter</button>
+                                <input asp-for="FilterForDigit[j].FilterDigit1" value="@Model.FilterForDigit[j].FilterDigit1">
+                                <input asp-for="FilterForDigit[j].FilterDigit2" value="@Model.FilterForDigit[j].FilterDigit2">
+                                <input type="submit" class="btn btn-success" value="Execute Filter">
                             </div>
-                            <button class="btn btn-primary" name="sortId"
-                                    value="@(Model.SortASC.Key == 2+j+1 ? Model.SortASC.Value ? new KeyValuePair<int, bool>(2+j+1, false) :
-                                                                                     new KeyValuePair<int, bool>(2+j+1, true) :
-                                                                                     new KeyValuePair<int, bool>(2+j+1, true))"></button>
+                            <input type="submit" class="btn btn-primary" onclick="CreateSort(3+@j)">
                         </th>
                     }
                     @for (int j = 0; j < Model.optFields[1].Count; j++)
                     {
                         <th>
                             @Model.optFields[1][j]
+                            <div class="row">
+                                <input asp-for="FilterForText[j].FilterText" value="@Model.FilterForText[j].FilterText">
+                                <input type="submit" class="btn btn-success" value="Execute Filter">
+                            </div>
+                            <input type="submit" class="btn btn-primary" onclick="CreateSort(3+@Model.optFields[0].Count+@j)">
                         </th>
                     }
                     @for (int j = 0; j < Model.optFields[2].Count; j++)
                     {
                         <th>
                             @Model.optFields[2][j]
+                            <div class="row">
+                                <input asp-for="FilterForWord[j].FilterText" value="@Model.FilterForWord[j].FilterText">
+                                <input type="submit" class="btn btn-success" value="Execute Filter">
+                            </div>
+                            <input type="submit" class="btn btn-primary" onclick="CreateSort(3+@Model.optFields[0].Count
+                                                                                              +@Model.optFields[1].Count+@j)">
                         </th>
                     }
                     @for (int j = 0; j < Model.optFields[3].Count; j++)
                     {
                         <th>
                             @Model.optFields[3][j]
+                            <div class="row">
+                                <input asp-for="FilterForDate[j].FilterDate1" value="@Model.FilterForDate[j].FilterDate1">
+                                <input asp-for="FilterForDate[j].FilterDate2" value="@Model.FilterForDate[j].FilterDate2">
+                                <input type="submit" class="btn btn-success" value="Execute Filter">
+                            </div>
+                            <input type="submit" class="btn btn-primary" onclick="CreateSort(3+@Model.optFields[0].Count+
+                                                                                               @Model.optFields[1].Count+
+                                                                                              @Model.optFields[2].Count+@j)">
                         </th>
                     }
                     @for (int j = 0; j < Model.optFields[4].Count; j++)
                     {
                         <th>
                             @Model.optFields[4][j]
+                            <div class="row">
+                                <select asp-for="FilterForBoolean[j].val">
+                                    @if (Model.FilterForBoolean[j].val is null || Model.FilterForBoolean[j].val == "All")
+                                    {
+                                        <option value="All" selected>All</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="All">All</option>
+                                    }
+                                    @if (Model.FilterForBoolean[j].val == "Yes")
+                                    {
+                                        <option value="Yes" selected>Checked</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="Yes">Checked</option>
+                                    }
+                                    @if (Model.FilterForBoolean[j].val == "No")
+                                    {
+                                        <option value="No" selected>Unchecked</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="No">Unchecked</option>
+                                    }
+                                </select>
+                                <input type="submit" class="btn btn-success" value="Execute Filter">
+                            </div>
+                            <input type="submit" class="btn btn-primary" onclick="CreateSort(3+@Model.optFields[0].Count+
+                                                                                               @Model.optFields[1].Count+
+                                                                                               @Model.optFields[2].Count+
+                                                                                               @Model.optFields[3].Count+@j)">
                         </th>
                     }
                 </tr>
-
                     @for (int i = 0; i < Model.Items.Count; i++)
                     {
                         <tr>
@@ -113,8 +158,18 @@
         <button asp-action="Create" asp-route-name="@ViewBag.Name" asp-route-id="@ViewBag.CollectionId" class="btn btn-danger">Create</button>
     </form>
 </div>
-<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-<script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script>
-   
+    function CreateSort(id) {
+        sortBy = document.getElementById("sort-by");
+        sortOrder = document.getElementById("sort-order");
+        if (@Model.SortBy == id) {
+            sortOrder.value = @Model.SortOrder*-1;
+            console.log(sortOrder.value)
+        }
+        else {
+            console.log("noooo")
+            sortOrder.value = 1;
+            sortBy.value = id;
+        }
+    }
 </script>

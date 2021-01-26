@@ -1,4 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Authentication;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace PostgresTest.ViewModels
 {
@@ -12,5 +16,8 @@ namespace PostgresTest.ViewModels
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; }
+        public string ReturnUrl { get; set; }
+        public IList<AuthenticationScheme> ExternalLogins { get; set; } = new List<AuthenticationScheme>();
+
     }
 }

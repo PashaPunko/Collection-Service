@@ -15,13 +15,13 @@
                     }
                 </div>
                 <div class="col-3">
-                    @if (Model.Item.Likes.Contains(ViewBag.Name))
+                    @if (Model.Item.Likes.FirstOrDefault(l=>l.UserName == ViewBag.Name) != null)
                     {
-                        <button class="btn btn-danger">Like</button>
+                        <button class="btn btn-danger" id="like-button">Like</button>
                     }
                     else
                     {
-                        <button class="btn btn-secondary">Like</button>
+                        <button class="btn btn-secondary" id="like-button">Like</button>
                     }
                 </div>
 
@@ -112,7 +112,25 @@
             })
                 .catch(error => console.error("Error: ", error));
         });
-
+    document.getElementById("like-button")
+        .addEventListener("click", function (e) {
+            e.preventDefault();
+            like = document.getElementById("like-button");
+            if (like.classList.contains("btn-danger")) {
+                like.classList.remove("btn-danger");
+                like.classList.add("btn-secondary");
+            }
+            else {
+                like.classList.remove("btn-secondary");
+                like.classList.add("btn-danger");
+            }
+            const data = new FormData();
+            fetch(`/item/like/@Model.Item.Id/@ViewBag.Name`, {
+                method: "POST",
+                body: data
+            })
+                .catch(error => console.error("Error: ", error));
+        });
     hubConnection.start().then(() => {
         connectionId = hubConnection.connectionId;
         console.log(connectionId)

@@ -68,26 +68,45 @@ namespace PostgresTest.Controllers
                     select item).ToList();
             items.Sort(delegate (Item x, Item y)
             {
-                switch (model.SortASC.Key)
+                switch (model.SortBy)
                 {
                     case 1:
-                        if (model.SortASC.Value) return x.Name.CompareTo(y.Name);
-                        else return x.Name.CompareTo(y.Name);
+                        return x.Name.CompareTo(y.Name)*model.SortOrder;
                     case 2:
-                        if (model.SortASC.Value) return x.Tags.Count.CompareTo(y.Tags.Count);
-                        else return y.Tags.Count.CompareTo(x.Tags.Count);
+                        return y.Tags.Count.CompareTo(x.Tags.Count)*model.SortOrder;
                     default:
                         {
                             int counter = 3;
-                            if (model.SortASC.Key >= counter && model.SortASC.Key < counter + x.DigitFields.Count)
-                            {
-                                if (model.SortASC.Value)
-                                    return x.DigitFields[model.SortASC.Key - counter].Digit.
-                                    CompareTo(y.DigitFields[model.SortASC.Key - counter].Digit);
-                                else return y.DigitFields[model.SortASC.Key - counter].Digit.
-                                    CompareTo(x.DigitFields[model.SortASC.Key - counter].Digit);
+                            if (model.SortBy >= counter && model.SortBy < counter + x.DigitFields.Count)
+                            { 
+                                return y.DigitFields[model.SortBy - counter].Digit.
+                                    CompareTo(x.DigitFields[model.SortBy - counter].Digit) * model.SortOrder;
                             }
-                            else return x.Name.CompareTo(y.Name);
+                            counter += x.DigitFields.Count;
+                            if (model.SortBy >= counter && model.SortBy < counter + x.TextFields.Count)
+                            {
+                                return y.TextFields[model.SortBy - counter].Text.
+                                    CompareTo(x.TextFields[model.SortBy - counter].Text) * model.SortOrder;
+                            }
+                            counter += x.TextFields.Count;
+                            if (model.SortBy >= counter && model.SortBy < counter + x.WordFields.Count)
+                            {
+                                return y.WordFields[model.SortBy - counter].Word.
+                                    CompareTo(x.WordFields[model.SortBy - counter].Word) * model.SortOrder;
+                            }
+                            counter += x.WordFields.Count;
+                            if (model.SortBy >= counter && model.SortBy < counter + x.DateFields.Count)
+                            {
+                                return y.DateFields[model.SortBy - counter].Date.
+                                    CompareTo(x.DateFields[model.SortBy - counter].Date) * model.SortOrder;
+                            }
+                            counter += x.DateFields.Count;
+                            if (model.SortBy >= counter && model.SortBy < counter + x.CheckboxFields.Count)
+                            {
+                                return y.CheckboxFields[model.SortBy - counter].Checkbox.
+                                    CompareTo(x.CheckboxFields[model.SortBy - counter].Checkbox) * model.SortOrder;
+                            }
+                            else return x.Name.CompareTo(y.Name) * model.SortOrder;
                         }
 
                 }
@@ -96,11 +115,10 @@ namespace PostgresTest.Controllers
         }
         [Route("Index/{id}/{name?}")]
         [HttpGet]
-        public async Task<IActionResult> Index(string? name, int id, CollectionViewModel? model, KeyValuePair<int, bool> sortId)
+        public async Task<IActionResult> Index(string? name, CollectionViewModel model, int id)
         {
             ViewBag.Status = await ValidateStatus();
-            Collection collection = null;
-            collection = db.Collections.
+            Collection collection = db.Collections.
                 Include(col => col.Items).ThenInclude(item => item.TextFields).
                 Include(col => col.Items).ThenInclude(item => item.DigitFields).
                 Include(col => col.Items).ThenInclude(item => item.WordFields).
@@ -112,23 +130,22 @@ namespace PostgresTest.Controllers
             {
                 return Redirect($"/Profile/Index/{name}");
             }
-            if (model.SortASC.Key == 0)
+            for (int i = 0; i < 5; i++)
             {
-                model = new CollectionViewModel();
-
-                for (int i = 0; i < 5; i++)
-                {
-                    model.optFields[i] = new List<string>(collection.OptFields[i].Split(' '));
-                }
-                model.SortASC = new KeyValuePair<int, bool>(1, true);
+                model.optFields[i] = new List<string>(collection.OptFields[i].Split(' '));
+            }
+            if (model.SortBy == 0)
+            {
+                model.SortBy = 1;
+                model.SortOrder = 1;
                 model.FilterForDigit = (new ProxyFilterForDigit[model.optFields[0].Count]).ToList();
                 model.FilterForDigit = model.FilterForDigit.ConvertAll(f => new ProxyFilterForDigit());
                 model.FilterForText = (new ProxyFilterForText[model.optFields[1].Count]).ToList();
-                model.FilterForText = model.FilterForText.ConvertAll(f =>  new ProxyFilterForText());
+                model.FilterForText = model.FilterForText.ConvertAll(f => new ProxyFilterForText());
                 model.FilterForWord = (new ProxyFilterForText[model.optFields[2].Count]).ToList();
                 model.FilterForWord = model.FilterForWord.ConvertAll(f => new ProxyFilterForText());
                 model.FilterForDate = (new ProxyFilterForDate[model.optFields[3].Count]).ToList();
-                model.FilterForDate = model.FilterForDate.ConvertAll(f =>  new ProxyFilterForDate());
+                model.FilterForDate = model.FilterForDate.ConvertAll(f => new ProxyFilterForDate());
                 model.FilterForBoolean = (new ProxyFilterForCheckbox[model.optFields[4].Count]).ToList();
                 model.FilterForBoolean = model.FilterForBoolean.ConvertAll(f => new ProxyFilterForCheckbox());
                 model.FilterForName = new ProxyFilterForText();
@@ -136,12 +153,16 @@ namespace PostgresTest.Controllers
                            group tag by tag.Text into g
                            select (g.Key);
                 model.FilterForTags = new ProxyFilterForTags { FilterTags = String.Join(' ', tags) };
+                model.Items = collection.Items;
             }
-            model.Items = FilterAndSortItems(model, collection);
+            else
+            {
+                model.Items = FilterAndSortItems(model, collection);
+            }
+
             ViewBag.Name = name;
             ViewBag.CollectionId = id;
             return View(model);
-
         }
         [Route("Create/{id}/{name?}")]
         [HttpGet]

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,7 +24,6 @@ namespace PostgresTest
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationContext>(options =>
@@ -47,9 +47,17 @@ namespace PostgresTest
                 hubOptions.HandshakeTimeout = System.TimeSpan.FromMinutes(10);
             });
             services.AddControllersWithViews();
+            services.AddAuthentication().AddFacebook(opt =>
+            {
+                opt.ClientId = "441229877060638";
+                opt.ClientSecret = "20796304ae1823a361a4ed6d3686a978";
+            }).AddGoogle(opt =>
+            {
+                opt.ClientId = "608997760046-o3oeqvkpbb5mpo5v73kcm6t31rjit6oc.apps.googleusercontent.com";
+                opt.ClientSecret = "WrUCe-fAEXfC3U7u4y2v3hu5";
+            });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
                 app.UseDeveloperExceptionPage();

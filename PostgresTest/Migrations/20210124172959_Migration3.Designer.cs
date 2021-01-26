@@ -12,7 +12,7 @@ using PostgresTest.Models;
 namespace PostgresTest.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20210112115811_Migration3")]
+    [Migration("20210124172959_Migration3")]
     partial class Migration3
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

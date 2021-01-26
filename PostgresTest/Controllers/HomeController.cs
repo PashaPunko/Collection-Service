@@ -28,11 +28,11 @@ namespace PostgresTest.Controllers
 
         private async Task<int> ValidateStatus()
         {
-            if (!User.Identity.IsAuthenticated) return 3;
+            if (!User.Identity.IsAuthenticated) return 4;
             else 
             {
-                User user = await userManager.FindByNameAsync(this.User.Identity.Name);
-                if (user == null || (await userManager.GetRolesAsync(user)).Contains("Blocked"))
+                User user =  await userManager.FindByNameAsync(User.Identity.Name);
+                if (user == null || userManager.GetRolesAsync(user).GetAwaiter().GetResult().Contains("Blocked"))
                 {
                     signInManager.SignOutAsync().Wait();
                     return 3;

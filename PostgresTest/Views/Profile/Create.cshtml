@@ -1,4 +1,4 @@
-﻿@model PostgresTest.Models.Collection
+﻿@model PostgresTest.ViewModels.CollectionCreateViewModel
 @{
     ViewBag.Title = "Список пользователей";
 }
@@ -19,8 +19,8 @@
             </div>
             <div class="row mb-3 justify-content-center align-items-center">
                 <label class="col-4 control-label">Image</label>
-                <div class="col-7">
-                    <input class="form-control" placeholder="Image" asp-for="Image" value="@Model.Image" />
+                <div class="col-7" id="dropz">
+                    <input type="file" asp-for="file" id ="file-input">
                 </div>
             </div>
             <div class="row mb-3 justify-content-center align-items-center">
@@ -61,5 +61,19 @@
         </div>
     </form>
 </div>
+<script src="~/js/dropzone-5.7.0/dist/min/dropzone.min.js"></script>
 <script>
+    var dropzone = new Dropzone("#dropz", { url: "/profile/create/@ViewBag.Name" });
+    Dropzone.options.Dropz = {
+        paramName: "file", // имя переменной, используемой для передачи файлов
+        maxFilesize: 2, // лимит размера файла в МБ
+        parallelUploads: 1, //кол-во параллельных обращений к серверу
+        maxFiles: 1, //макс. число файлов в данном контейнере
+    };
+    dropzone.on("addedfile", function (file) {
+        document.getElementById("file-input").value = "";
+    });
+    dropzone.on("removedfile", function (file) {
+        document.getElementById("file-input").value = "";
+    });
 </script>

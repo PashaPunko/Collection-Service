@@ -69,6 +69,7 @@ namespace PostgresTest.Controllers
                 Include(item => item.DateFields).
                 Include(item => item.CheckboxFields).
                 Include(item => item.Comments).
+                Include(item => item.Likes).
                 FirstOrDefault(col => col.Id == itemId);
             if (item is null)
             {
@@ -83,6 +84,21 @@ namespace PostgresTest.Controllers
             ViewBag.Name = name;
             ViewBag.CollectionId = id;
             return View(model);
+        }
+        [Route("Like/{itemId}/{name}")]
+        [HttpPost]
+        public async Task Like(int id, int itemId, string name)
+        {
+            var like = db.Likes.FirstOrDefault(l => l.ItemId == itemId && l.UserName == name);
+            var item = db.Items.FirstOrDefault(i => i.Id == itemId);
+            if (like is null)
+            {
+                like = new Like { UserName = name, Item = item, ItemId = item.Id };
+                item.Likes.Add(like);
+                db.Likes.Add(like);
+            }
+            else db.Likes.Remove(like);
+            await db.SaveChangesAsync();
         }
         [Route("Join")]
         [HttpPost]
