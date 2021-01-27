@@ -4,9 +4,9 @@ using System.Collections.Generic;
 
 namespace PostgresTest.ViewModels
 {
-    public class HomeViewModel
+    public class ConstantValues
     {
-        public List<KeyValuePair<string, int>> Tags { get; set; } = new List<KeyValuePair<string, int>>();
+        public string Tags { get; set; }
         public List<Item> Items { get; set; } = new List<Item>();
         public List<Collection> Collections { get; set; } = new List<Collection>();
     }

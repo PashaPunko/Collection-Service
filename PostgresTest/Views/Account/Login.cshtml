@@ -1,6 +1,6 @@
 ﻿@model PostgresTest.ViewModels.LoginViewModel
     <div class="row justify-content-center center-position">
-        <div class="conteiner-md justify-content-center auth-form">
+        <div class="col-md-6 col-lg-4 col-sm-8 container-md justify-content-center auth-form">
             <form method="post" asp-controller="Account" asp-action="Login" class="justify-content-center">
                 <div class="row m-3 justify-content-center">
                     <div class="container-fluid">
@@ -22,8 +22,8 @@
                         <span asp-validation-for="Password"></span>
                     </div>
                 </div>
-                <div class="row mb-3 justify-content-center align-items-center">
-                    <div class="row mb-3">
+                <div class="row mb-3 justify-content-center">
+                    <div class="col-offset-3 col-9">
                         <a asp-controller="Account" asp-action="Signin">Sign In</a>
                     </div>
                 </div>
@@ -34,13 +34,17 @@
                 </div>
             </form>
             <form method="post" asp-controller="Account" asp-action="ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" class="justify-content-center">
-                
                 <div class="row mb-3 justify-content-center">
-                    @foreach (var provider in Model.ExternalLogins) { 
-                    <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name"
-                            title="Login using @provider.DisplayName">
-                        @provider.DisplayName
-                        </button>
+                    Or use social accounts:
+                </div>
+                <div class="row mb-3 justify-content-around">
+                    @foreach (var provider in Model.ExternalLogins)
+                    {
+                        
+                            <button type="submit" class="btn btn-success col-3 col-sm-4 " name="provider" value="@provider.Name"
+                                    title="Login using @provider.DisplayName">
+                                @provider.DisplayName
+                            </button>
                     }
                 </div>
             </form>

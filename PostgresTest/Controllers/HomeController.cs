@@ -9,11 +9,10 @@ using PostgresTest.Models;
 using PostgresTest.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
-
+using CloudinaryDotNet;
 
 namespace PostgresTest.Controllers
 {
-    [Route("[controller]")]
     public class HomeController : Controller
     {
         private ApplicationContext db;
@@ -42,7 +41,8 @@ namespace PostgresTest.Controllers
                     ("Admin") ? 1 : 2;
             }
         }
-        [Route("Index/{name?}")]
+        [Route("Home/Index/{name?}")]
+        [Route("/")]
         [HttpGet]
         public async Task<IActionResult> Index(string? name)
         {
@@ -50,15 +50,19 @@ namespace PostgresTest.Controllers
             {
                 name = User.Identity.Name;
             }
+            Account account = new Account(
+                "dcdh3xiuj",
+                "792633569332572",
+                "lHTZd2k2iF6w-712lF9BXjjjgxA");
+            var cloudinary = new Cloudinary(account);
             ViewBag.Status = await ValidateStatus();
             ViewBag.Name = name;
-            HomeViewModel model = new HomeViewModel();
+            ConstantValues model = new ConstantValues();
             model.Collections = new List<Collection>(db.Collections.Include(col=>col.User).OrderBy(col => col.Items.Count).Take(20));
-            model.Items = new List<Item>(db.Items.Include(i=>i.Collection).ThenInclude(col=>col.User).OrderBy(i => i.CreationTime).Take(20));
+            model.Items = new List<Item>(db.Items.Include(i=>i.Collection).ThenInclude(col=>col.User).OrderByDescending(i => i.CreationTime).Take(20));
             var tags = from tag in db.Tags
-                                       group tag by tag.Text into g
-                                       select new KeyValuePair<string, int>(g.Key,g.Count());
-            model.Tags = tags.ToList();
+                                       select tag.Text;
+            model.Tags = String.Join(" ",tags.ToList());
             return View(model);
         }
 

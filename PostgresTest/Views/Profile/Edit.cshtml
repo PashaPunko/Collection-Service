@@ -3,12 +3,27 @@
     ViewBag.Title = "Список пользователей";
 }
 <div class="modal-content">
+    <div class="row justify-content-center">
+        <div class="col-sm-6 m-3">
+            <form method="post" asp-controller="Profile" asp-action="Upload" asp-route-name="@ViewBag.Name" class="dropzone" id="dropz" style="display:none">
+            </form>
+        </div>
+    </div>
     <form method="post" asp-controller="Profile" asp-action="Edit" asp-route-name="@ViewBag.Name" asp-route-id="@Model.Id">
+        <input type="hidden" asp-for="Image" id="input-image" value="@Model.Image" />
         <div class="modal-body">
+            <div class="row mb-3 justify-content-center" id="pict">
+                <div class="col-sm-6 col-9">
+                    <img src="@Model.Image" class="img-fluid" id="pic-img" />
+                </div>
+                <div class="col-1 close">
+                    <i class="fa fa-times fa-2x " id="file-remove"></i>
+                </div>
+            </div>
             <div class="row mb-3 justify-content-center align-items-center">
                 <label class="col-4 control-label">Name</label>
                 <div class="col-7">
-                    <input class="form-control" placeholder="Login" asp-for="CollectionName" value="@Model.CollectionName"/>
+                    <input class="form-control" placeholder="Login" asp-for="CollectionName" value="@Model.CollectionName" />
                 </div>
             </div>
             <div class="row mb-3 justify-content-center align-items-center">
@@ -18,39 +33,51 @@
                 </div>
             </div>
             <div class="row mb-3 justify-content-center align-items-center">
-                <label class="col-4 control-label">Image</label>
+                <label class="col-4 control-label">Theme</label>
                 <div class="col-7">
-                    <input class="form-control" placeholder="Image" asp-for="Image" value="@Model.Image" />
+                    <select asp-for="Theme">
+                        @foreach (var theme in ApplicationConstants.Themes)
+                        {
+                            if (theme == Model.Theme)
+                            {
+                                <option value="@theme" selected>@theme</option>
+                            }
+                            else
+                            {
+                                <option value="@theme">@theme</option>
+                            }
+                        }
+                    </select>
                 </div>
             </div>
             <div class="row mb-3 justify-content-center align-items-center">
                 <label class="col-4 control-label">Digit Fields</label>
                 <div class="col-7">
-                    <input class="form-control" placeholder="" asp-for="OptFields[0]" value="@Model.OptFields[0]"/>
+                    <input class="form-control" placeholder="" value="@Model.OptFields[0]" disabled readonly/>
                 </div>
             </div>
             <div class="row mb-3 justify-content-center align-items-center">
                 <label class="col-4 control-label">Text Fields</label>
                 <div class="col-7">
-                    <input class="form-control" placeholder="" asp-for="OptFields[1]" value="@Model.OptFields[1]"/>
+                    <input class="form-control" placeholder="" value="@Model.OptFields[1]" disabled readonly/>
                 </div>
             </div>
             <div class="row mb-3 justify-content-center align-items-center">
                 <label class="col-4 control-label">Line Fields</label>
                 <div class="col-7">
-                    <input class="form-control" placeholder="" asp-for="OptFields[2]" value="@Model.OptFields[2]"/>
+                    <input class="form-control" placeholder="" value="@Model.OptFields[2]" disabled readonly/>
                 </div>
             </div>
             <div class="row mb-3 justify-content-center align-items-center">
                 <label class="col-4 control-label">Date Fields</label>
                 <div class="col-7">
-                    <input class="form-control" placeholder="" asp-for="OptFields[3]" value="@Model.OptFields[3]"/>
+                    <input class="form-control" placeholder="" value="@Model.OptFields[3]" disabled readonly/>
                 </div>
             </div>
             <div class="row mb-3 justify-content-center align-items-center">
                 <label class="col-4 control-label">Boolean Fields</label>
                 <div class="col-7">
-                    <input class="form-control" placeholder="" asp-for="OptFields[4]" value="@Model.OptFields[4]"/>
+                    <input class="form-control" placeholder="" value="@Model.OptFields[4]" disabled readonly/>
                 </div>
             </div>
 
@@ -61,5 +88,32 @@
         </div>
     </form>
 </div>
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/lib/dropzone-5.7.0/dist/dropzone.js"></script>
 <script>
+    Dropzone.options.dropz = {
+        success: function (file, res) {
+            document.getElementById("input-image").value = res;
+            document.getElementById("dropz").style.display = "none";
+            document.getElementById("pict").style.display = "flex";
+            document.getElementById("pic-img").src = res;
+            var _this = this;
+            document.getElementById("file-remove").addEventListener("click", function () {
+                _this.removeAllFiles();
+                document.getElementById("input-image").value = "https://res.cloudinary.com/dcdh3xiuj/image/upload/v1611675691/sample.jpg";
+                document.getElementById("dropz").style.display = "flex";
+                document.getElementById("pict").style.display = "none";
+            });
+
+        },
+        init: function (file, res) {
+            var _this = this;
+            document.getElementById("file-remove").addEventListener("click", function () {
+                _this.removeAllFiles();
+                document.getElementById("input-image").value = "https://res.cloudinary.com/dcdh3xiuj/image/upload/v1611675691/sample.jpg";
+                document.getElementById("dropz").style.display = "flex";
+                document.getElementById("pict").style.display = "none";
+            });
+        },
+    };
 </script>

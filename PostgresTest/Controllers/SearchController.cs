@@ -40,14 +40,11 @@ namespace PostgresTest.Controllers
             }
             return 3;
         }
-        [Route("Index/{name?}")]
+        [Route("All/{name?}")]
         [HttpGet]
-        public IActionResult Index(string? name, string searchString)
+        public async Task<IActionResult> All(string? name, string searchString)
         {
-            if (ViewBag.Status == 3 || (User.Identity.Name != name && ViewBag.Status == 2))
-            {
-                return RedirectToAction("Index", "Home");
-            }
+            ViewBag.Status = await ValidateStatus();
             List<Item> model = new List<Item>();
             model.AddRange(db.Items.Include(i => i.Tags).Include(i => i.Collection).ThenInclude(c => c.User)
     .Where(p => p.SearchVector.Matches(searchString))
@@ -68,9 +65,25 @@ namespace PostgresTest.Controllers
             model.AddRange(db.WordFields
     .Where(p => p.SearchVector.Matches(searchString)).Select(c => c.Item)
     .ToList());
+            model.AddRange(db.Tags
+    .Where(p => p.SearchVector.Matches(searchString)).Select(c => c.Item)
+    .ToList());
             ViewBag.Name = name;
             model = model.Distinct().ToList();
-            return View(model);
+            return View("Index" , model);
+        }
+        [Route("Tag/{searchString}/{name?}")]
+        [HttpGet]
+        public async Task<IActionResult> Tag(string? name, string searchString)
+        {
+            ViewBag.Status = await ValidateStatus();
+            List < Item> model = new List<Item>();
+            model.AddRange(db.Tags.Include(t => t.Item).ThenInclude(i => i.Collection).ThenInclude(c => c.User)
+    .Where(p => p.SearchVector.Matches(searchString)).Select(c => c.Item)
+    .ToList());
+            ViewBag.Name = name;
+            model = model.Distinct().ToList();
+            return View("Index", model);
         }
 
     }

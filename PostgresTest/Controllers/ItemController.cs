@@ -53,10 +53,6 @@ namespace PostgresTest.Controllers
         public async Task<IActionResult> Index(string? name, int id, int itemId)
         {
             ViewBag.Status = await ValidateStatus();
-            if (ViewBag.Status == 3 || (User.Identity.Name != name && ViewBag.Status == 2))
-            {
-                return RedirectToAction("Index", "Home");
-            }
             Collection collection = db.Collections.FirstOrDefault(col => col.Id == id);
             if (collection is null)
             {

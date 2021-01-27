@@ -8,13 +8,13 @@
             <div class="row mb-3 justify-content-center align-items-center">
                 <label class="col-4 control-label">Name</label>
                 <div class="col-7">
-                    <input class="form-control" placeholder="Login" asp-for="Item.Name" value="@Model.Item.Name" />
+                    <input class="form-control" placeholder="Name" asp-for="Item.Name" value="@Model.Item.Name" />
                 </div>
             </div>
             <div class="row mb-3 justify-content-center align-items-center">
                 <label class="col-4 control-label">Tags</label>
                 <div class="col-7">
-                    <input class="form-control" placeholder="Description" asp-for="TagString" value="@Model.TagString" />
+                    <input class="form-control" placeholder="Tags" asp-for="TagString" value="@Model.TagString" />
                 </div>
             </div>
             @for (int j = 0; j < Model.optFields[0].Count; j++)
@@ -58,14 +58,21 @@
                 <div class="row mb-3 justify-content-center align-items-center">
                     <label class="col-4 control-label">@Model.optFields[4][j]</label>
                     <div class="col-7">
-                        <input class="form-control" placeholder="@Model.optFields[4][j]" asp-for="Item.CheckboxFields[j].Checkbox"/>
+                        @if (Model.Item.CheckboxFields[j] is null || Model.Item.CheckboxFields[j].Checkbox)
+                        {
+                            <input type="checkbox" checked="checked" class="form-check-input" placeholder="@Model.optFields[4][j]" asp-for="Item.CheckboxFields[j].Checkbox" />
+                        }
+                        else
+                        {
+                            <input type="checkbox" class="form-check-input" placeholder="@Model.optFields[4][j]" asp-for="Item.CheckboxFields[j].Checkbox" />
+                        }
                     </div>
                 </div>
             }
         </div>
         <div class="modal-footer">
             <input type="submit" class="btn btn-success" value="Save" />
-            <button type="button" class="btn btn-success" onclick="window.location.href=`/Collection/Index/@ViewBag.Name/@ViewBag.CollectionId`">Cancel</button>
+            <button type="button" class="btn btn-success" onclick="window.location.href=`/Collection/Index/@ViewBag.CollectionId/@ViewBag.Name`">Cancel</button>
         </div>
     </form>
 </div>

@@ -4,43 +4,62 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - PostgresTest</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap-5.0.0-beta1-dist/css/bootstrap.min.css" />
+    
+    <link rel="stylesheet" href="~/lib/dropzone-5.7.0/dist/dropzone.css" type="text/css" />
+    <link rel="stylesheet" href="~/lib/yaireo/tagify/dist/tagify.css" />
     <link rel="stylesheet" href="~/css/site.css" />
-    <link rel="stylesheet" href="~/js/dropzone-5.7.0/dist/min/dropzone.min.css"/>
+    <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.min.css" />
 </head>
 <body>
-    
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid ">
+            <form method="get" class="d-flex" asp-controller="Search" asp-action="All" asp-route-name="@ViewBag.Name">
+
+                <input class="form-control" placeholder="Search" name="searchString" />
+                <input type="submit" class="btn btn-success" value="Search" />
+            </form>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0  justify-content-end">
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Home" asp-action="Index" asp-route-name="@ViewBag.Name">Home Page</a>
+                    </li>
+                    @if (ViewBag.Status < 2)
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Admin" asp-action="Index">Admin Page</a>
+                        </li>
+                    }
+                    @if (ViewBag.Status < 3)
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Profile" asp-action="Index" asp-route-name="@User.Identity.Name">Profile</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Account" asp-action="Logout">Logout</a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Account" asp-action="Login">Login</a>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </nav>
     <div class="container">
         <main role="main" class="pb-3">
-            <div class="row">
-                <form method="get" asp-controller="Search" asp-action="Index" asp-route-name="@ViewBag.Name">
-                    <input class="form-control" placeholder="Search" name="searchString" />
-                    <input type="submit" class="btn btn-success" value="Find" />
-                </form>
-                <a class="btn btn-sm btn-primary" asp-controller="Home" asp-action="Index" asp-route-name="@ViewBag.Name">Home Page</a>
-                @if (ViewBag.Status < 2)
-                {
-                    <a class="btn btn-sm btn-primary" asp-controller="Admin" asp-action="Index">Admin Panel</a>
-                }
-                @if (ViewBag.Status < 3)
-                {
-                    <a class="btn btn-sm btn-primary" asp-controller="Profile" asp-action="Index" asp-route-name="@User.Identity.Name">Profile</a>
-                    <a class="btn btn-sm btn-dark" asp-controller="Account" asp-action="Logout">Logout</a>
-                }
-                else
-                {
-                    <a class="btn btn-sm btn-success" asp-controller="Account" asp-action="Login">Login</a>
-                }
-            </div>
-           
             @RenderBody()
         </main>
     </div>
-
-    
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/bootstrap-5.0.0-beta1-dist/js/bootstrap.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-    @RenderSection("Scripts", required: false)
 </body>
 </html>

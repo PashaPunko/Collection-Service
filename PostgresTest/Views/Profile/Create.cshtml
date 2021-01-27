@@ -1,10 +1,26 @@
-﻿@model PostgresTest.ViewModels.CollectionCreateViewModel
+﻿@model PostgresTest.Models.Collection
 @{
     ViewBag.Title = "Список пользователей";
 }
-<div class="modal-content">
+<div class="modal-content justify-content-center">
+    <div class="row justify-content-center">
+        <div class="col-sm-6 m-3">
+            <form method="post" asp-controller="Profile" asp-action="Upload" asp-route-name="@ViewBag.Name" class="dropzone" id="dropz">
+            </form>
+        </div>
+    </div>
     <form method="post" asp-controller="Profile" asp-action="Create" asp-route-name="@ViewBag.Name">
+        <input type="hidden" asp-for="Image" id="input-image" value="https://res.cloudinary.com/dcdh3xiuj/image/upload/v1611675691/sample.jpg" />
         <div class="modal-body">
+            <div class="row mb-3 justify-content-center" style="display:none;" id="pict">
+                <div class="col-sm-6 col-9">
+                    <img src="" class="img-fluid" id="pic-img" />
+                </div>
+                <div class="col-3 close">
+                    <i class="fa fa-times fa-2x" id="file-remove"></i>
+                </div>
+
+            </div>
             <div class="row mb-3 justify-content-center align-items-center">
                 <label class="col-4 control-label">Name</label>
                 <div class="col-7">
@@ -18,62 +34,91 @@
                 </div>
             </div>
             <div class="row mb-3 justify-content-center align-items-center">
-                <label class="col-4 control-label">Image</label>
-                <div class="col-7" id="dropz">
-                    <input type="file" asp-for="file" id ="file-input">
-                </div>
-            </div>
-            <div class="row mb-3 justify-content-center align-items-center">
-                <label class="col-4 control-label">Digit Fields</label>
+                <label class="col-4 control-label">Theme</label>
                 <div class="col-7">
-                    <input class="form-control" placeholder="" asp-for="OptFields[0]" value="@Model.OptFields[0]" />
+                    <select asp-for="Theme">
+                        @foreach (var theme in ApplicationConstants.Themes)
+                        {
+                            <option value="@theme">@theme</option>
+                        }
+                    </select>
                 </div>
             </div>
-            <div class="row mb-3 justify-content-center align-items-center">
-                <label class="col-4 control-label">Text Fields</label>
-                <div class="col-7">
-                    <input class="form-control" placeholder="" asp-for="OptFields[1]" value="@Model.OptFields[1]" />
+                <div class="row mb-3 justify-content-center align-items-center">
+                    <label class="col-4 control-label">Digit Fields</label>
+                    <div class="col-7">
+                        <div class="row">
+                            <input class="customLook" asp-for="OptFields[0]" />
+                            <button type="button">+</button>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="row mb-3 justify-content-center align-items-center">
-                <label class="col-4 control-label">Line Fields</label>
-                <div class="col-7">
-                    <input class="form-control" placeholder="" asp-for="OptFields[2]" value="@Model.OptFields[2]" />
+                <div class="row mb-3 justify-content-center align-items-center">
+                    <label class="col-4 control-label">Text Fields</label>
+                    <div class="col-7">
+                        <input class="form-control" placeholder="" asp-for="OptFields[1]" value="@Model.OptFields[1]" />
+                    </div>
                 </div>
-            </div>
-            <div class="row mb-3 justify-content-center align-items-center">
-                <label class="col-4 control-label">Date Fields</label>
-                <div class="col-7">
-                    <input class="form-control" placeholder="" asp-for="OptFields[3]" value="@Model.OptFields[3]" />
+                <div class="row mb-3 justify-content-center align-items-center">
+                    <label class="col-4 control-label">Line Fields</label>
+                    <div class="col-7">
+                        <input class="form-control" placeholder="" asp-for="OptFields[2]" value="@Model.OptFields[2]" />
+                    </div>
                 </div>
-            </div>
-            <div class="row mb-3 justify-content-center align-items-center">
-                <label class="col-4 control-label">Boolean Fields</label>
-                <div class="col-7">
-                    <input class="form-control" placeholder="" asp-for="OptFields[4]" value="@Model.OptFields[4]" />
+                <div class="row mb-3 justify-content-center align-items-center">
+                    <label class="col-4 control-label">Date Fields</label>
+                    <div class="col-7">
+                        <input class="form-control" placeholder="" asp-for="OptFields[3]" value="@Model.OptFields[3]" />
+                    </div>
                 </div>
-            </div>
+                <div class="row mb-3 justify-content-center align-items-center">
+                    <label class="col-4 control-label">Boolean Fields</label>
+                    <div class="col-7">
+                        <input class="form-control" placeholder="" asp-for="OptFields[4]" value="@Model.OptFields[4]" />
+                    </div>
+                </div>
 
-        </div>
-        <div class="modal-footer">
-            <input type="submit" class="btn btn-success" value="Save" />
-            <button type="button" class="btn btn-success" onclick="window.location.href=`/Profile/Index/@ViewBag.Name`">Cancel</button>
-        </div>
-    </form>
-</div>
-<script src="~/js/dropzone-5.7.0/dist/min/dropzone.min.js"></script>
+            </div>
+                <div class="modal-footer">
+                    <input type="submit" class="btn btn-success" value="Save" />
+                    <button type="button" class="btn btn-success" onclick="window.location.href=`/Profile/Index/@ViewBag.Name`">Cancel</button>
+                </div>
+</form>
+    </div>
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/lib/dropzone-5.7.0/dist/dropzone.js"></script>
+<script src="~/lib/yaireo/tagify/dist/tagify.min.js"></script>
 <script>
-    var dropzone = new Dropzone("#dropz", { url: "/profile/create/@ViewBag.Name" });
-    Dropzone.options.Dropz = {
-        paramName: "file", // имя переменной, используемой для передачи файлов
-        maxFilesize: 2, // лимит размера файла в МБ
-        parallelUploads: 1, //кол-во параллельных обращений к серверу
-        maxFiles: 1, //макс. число файлов в данном контейнере
+    Dropzone.options.dropz = {
+        success: function (file, res) {
+            document.getElementById("input-image").value = res;
+            document.getElementById("dropz").style.display = "none";
+            document.getElementById("pict").style.display = "flex";
+            document.getElementById("pic-img").src = res;
+            var _this = this;
+            document.getElementById("file-remove").addEventListener("click", function () {
+                _this.removeAllFiles();
+                document.getElementById("input-image").value = "https://res.cloudinary.com/dcdh3xiuj/image/upload/v1611675691/sample.jpg";
+                document.getElementById("dropz").style.display = "flex";
+                document.getElementById("pict").style.display = "none";
+            });
+
+        }
     };
-    dropzone.on("addedfile", function (file) {
-        document.getElementById("file-input").value = "";
+    input = document.querySelector('.customLook');
+    tagify = new Tagify(input, {
+        originalInputValueFormat: valuesArr => valuesArr.map(item => item.value).join(' '),
+        dropdown: {
+            position: 'text',
+            enabled: 1
+        }
     });
-    dropzone.on("removedfile", function (file) {
-        document.getElementById("file-input").value = "";
-    });
+
+    button = input.nextElementSibling;
+
+    button.addEventListener("click", onAddButtonClick)
+
+    function onAddButtonClick() {
+        tagify.addEmptyTag()
+    }
 </script>

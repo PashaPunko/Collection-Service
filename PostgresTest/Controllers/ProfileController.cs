@@ -9,6 +9,9 @@ using PostgresTest.Models;
 using PostgresTest.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Http;
+using CloudinaryDotNet;
+using CloudinaryDotNet.Actions;
 
 namespace PostgresTest.Controllers
 {
@@ -68,13 +71,14 @@ namespace PostgresTest.Controllers
             {
                 return RedirectToAction("Index", "Home");
             }
-            CollectionCreateViewModel model = new CollectionCreateViewModel();
+            Collection model = new Collection();
+            
             ViewBag.Name = name;
             return View(model);
         }
         [Route("Create/{name}")]
         [HttpPost]
-        public async Task<IActionResult> Create( string name, CollectionCreateViewModel model)
+        public async Task<IActionResult> Create( string name, Collection model)
         {
             ViewBag.Status = await ValidateStatus();
             if (ViewBag.Status == 3 || (User.Identity.Name != name && ViewBag.Status == 2))
@@ -87,6 +91,23 @@ namespace PostgresTest.Controllers
             db.Collections.Add((Collection)model);
             db.SaveChanges();
             return Redirect($"/Profile/Index/{name}");
+        }
+        [Route("Upload/{name}")]
+        [HttpPost]
+        public IActionResult Upload(string name, IFormFile file)
+        {
+            Account account = new Account(
+                "dcdh3xiuj",
+                "792633569332572",
+                "lHTZd2k2iF6w-712lF9BXjjjgxA");
+
+            Cloudinary cloudinary = new Cloudinary(account);
+            var uploadParams = new ImageUploadParams()
+            {
+                File = new FileDescription(file.Name, file.OpenReadStream())
+            };
+            var uploadResult = cloudinary.Upload(uploadParams);
+            return Json(uploadResult.Url);
         }
         [Route("Delete/{name}/{id}")]
         [HttpGet]
