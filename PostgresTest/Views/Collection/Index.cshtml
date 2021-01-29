@@ -2,173 +2,386 @@
 @{
     ViewBag.Title = "Список пользователей";
 }
-    <div style="overflow-x: auto">
-        <form method="get" asp-controller="Collection" asp-action="Index" asp-route-name="@ViewBag.Name" asp-route-id="@ViewBag.CollectionId">
-            <input type="hidden" asp-for="SortBy" value="@Model.SortBy" id="sort-by">
-            <input type="hidden" asp-for="SortOrder" value="@Model.SortOrder" id="sort-order">
-            <table class="table table-striped">
-                <tr>
-                    <th>
-                        Name
-                        <div class="row">
-                            <input asp-for="FilterForName.FilterText" value="">
-                            <input type="submit" class="btn btn-success" value="Execute Filter">
+<div style="overflow-x:visible;">
+    <table id="collection" class="table table-striped overflow-visible">
+        <tr>
+            <th>
+                <div class="col">
+                    <div id="1-sort"><p style="white-space:nowrap" class="m-0">Name<i class="fa fa-chevron-down col-1" aria-hidden="true"></i></p></div>
+                    <div id="1-filter" class="customerTooltip">
+                        <div class="auth-form row-col-8 p-3">
+                            <div class="row table-filters">
+                                <input type="text" class="form-control" name="1-filter-input">
+                            </div>
+                            <div class="row justify-content-around">
+                                <button class="btn btn-sm btn-success m-2 col-5" id="1-filter-exec">Execute Filter</button>
+                                <button class="btn btn-sm btn-danger m-2 col-5" id="1-filter-delete">Delete Filter</button>
+                            </div>
                         </div>
-                        <input type="submit" class="btn btn-primary" onclick="CreateSort(1)">
-                    </th>
-                    <th>
-                        Tags
-                        <div class="row">
-                            <input asp-for="FilterForTags.FilterTags" value="@Model.FilterForTags.FilterTags">
-                            <input type="submit" class="btn btn-success" value="Execute Filter">
+                    </div>
+                    <button id="1-filter-ref" class="border-0"><i class="fa fa-filter"></i></button>
+                </div>
+            </th>
+            <th>
+                <div class="col">
+                    <div id="2-sort"><p style="white-space:nowrap" class="m-0">Tags<i class="fa fa-chevron-down col-1" aria-hidden="true"></i></p></div>
+                    <div id="2-filter" class="customerTooltip">
+                        <div class="auth-form row-col-8 p-3">
+                            <div class="row  table-filters">
+                                <input type="text" class="form-control" name="2-filter-input">
+                            </div>
+                            <div class="row justify-content-around">
+                                <button class="btn btn-sm btn-success m-2 col-5" id="2-filter-exec">Execute Filter</button>
+                                <button class="btn btn-sm btn-danger m-2 col-5" id="2-filter-delete">Delete Filter</button>
+                            </div>
                         </div>
-                        <input type="submit" class="btn btn-primary" onclick="CreateSort(2)">
-                    </th> 
-                    @for (int j = 0; j < Model.optFields[0].Count; j++)
-                    {
-                        <th>
-                            @Model.optFields[0][j]
-                            <div class="row">
-                                <input asp-for="FilterForDigit[j].FilterDigit1" value="@Model.FilterForDigit[j].FilterDigit1">
-                                <input asp-for="FilterForDigit[j].FilterDigit2" value="@Model.FilterForDigit[j].FilterDigit2">
-                                <input type="submit" class="btn btn-success" value="Execute Filter">
-                            </div>
-                            <input type="submit" class="btn btn-primary" onclick="CreateSort(3+@j)">
-                        </th>
-                    }
-                    @for (int j = 0; j < Model.optFields[1].Count; j++)
-                    {
-                        <th>
-                            @Model.optFields[1][j]
-                            <div class="row">
-                                <input asp-for="FilterForText[j].FilterText" value="@Model.FilterForText[j].FilterText">
-                                <input type="submit" class="btn btn-success" value="Execute Filter">
-                            </div>
-                            <input type="submit" class="btn btn-primary" onclick="CreateSort(3+@Model.optFields[0].Count+@j)">
-                        </th>
-                    }
-                    @for (int j = 0; j < Model.optFields[2].Count; j++)
-                    {
-                        <th>
-                            @Model.optFields[2][j]
-                            <div class="row">
-                                <input asp-for="FilterForWord[j].FilterText" value="@Model.FilterForWord[j].FilterText">
-                                <input type="submit" class="btn btn-success" value="Execute Filter">
-                            </div>
-                            <input type="submit" class="btn btn-primary" onclick="CreateSort(3+@Model.optFields[0].Count
-                                                                                              +@Model.optFields[1].Count+@j)">
-                        </th>
-                    }
-                    @for (int j = 0; j < Model.optFields[3].Count; j++)
-                    {
-                        <th>
-                            @Model.optFields[3][j]
-                            <div class="row">
-                                <input asp-for="FilterForDate[j].FilterDate1" value="@Model.FilterForDate[j].FilterDate1">
-                                <input asp-for="FilterForDate[j].FilterDate2" value="@Model.FilterForDate[j].FilterDate2">
-                                <input type="submit" class="btn btn-success" value="Execute Filter">
-                            </div>
-                            <input type="submit" class="btn btn-primary" onclick="CreateSort(3+@Model.optFields[0].Count+
-                                                                                               @Model.optFields[1].Count+
-                                                                                              @Model.optFields[2].Count+@j)">
-                        </th>
-                    }
-                    @for (int j = 0; j < Model.optFields[4].Count; j++)
-                    {
-                        <th>
-                            @Model.optFields[4][j]
-                            <div class="row">
-                                <select asp-for="FilterForBoolean[j].val">
-                                    @if (Model.FilterForBoolean[j].val is null || Model.FilterForBoolean[j].val == "All")
-                                    {
-                                        <option value="All" selected>All</option>
-                                    }
-                                    else
-                                    {
-                                        <option value="All">All</option>
-                                    }
-                                    @if (Model.FilterForBoolean[j].val == "Yes")
-                                    {
-                                        <option value="Yes" selected>Checked</option>
-                                    }
-                                    else
-                                    {
-                                        <option value="Yes">Checked</option>
-                                    }
-                                    @if (Model.FilterForBoolean[j].val == "No")
-                                    {
-                                        <option value="No" selected>Unchecked</option>
-                                    }
-                                    else
-                                    {
-                                        <option value="No">Unchecked</option>
-                                    }
-                                </select>
-                                <input type="submit" class="btn btn-success" value="Execute Filter">
-                            </div>
-                            <input type="submit" class="btn btn-primary" onclick="CreateSort(3+@Model.optFields[0].Count+
-                                                                                               @Model.optFields[1].Count+
-                                                                                               @Model.optFields[2].Count+
-                                                                                               @Model.optFields[3].Count+@j)">
-                        </th>
-                    }
-                </tr>
-                    @for (int i = 0; i < Model.Items.Count; i++)
-                    {
-                        <tr>
-                            <td><a asp-controller="Item" asp-action="Index" asp-route-name="@ViewBag.Name" asp-route-itemId="@Model.Items[i].Id" asp-route-id="@ViewBag.CollectionId">>@Model.Items[i].Name</a></td>
-                            <td>
-                                @for (int j = 0; j < Model.Items[i].Tags.Count; j++)
-                                {
-                                    @Model.Items[i].Tags[j].Text;
-                                }
-                            </td>
-                            @for (int j = 0; j < Model.Items[i].DigitFields.Count; j++)
-                            {
-                                <td>@Model.Items[i].DigitFields[j].Digit</td>
-                            }
-                            @for (int j = 0; j < Model.Items[i].TextFields.Count; j++)
-                            {
-                                <td>@Model.Items[i].TextFields[j].Text</td>
-                            }
-                            @for (int j = 0; j < Model.Items[i].WordFields.Count; j++)
-                            {
-                                <td>@Model.Items[i].WordFields[j].Word</td>
-                            }
-                            @for (int j = 0; j < Model.Items[i].DateFields.Count; j++)
-                            {
-                                <td>@Model.Items[i].DateFields[j].Date</td>
-                            }
-                            @for (int j = 0; j < Model.Items[i].CheckboxFields.Count; j++)
-                            {
-                                <td>@Model.Items[i].CheckboxFields[j].Checkbox</td>
-                            }
-                            <td>
-                                <a class="btn btn-sm btn-primary" asp-action="Edit" asp-route-name="@ViewBag.Name" asp-route-itemId="@Model.Items[i].Id" asp-route-id="@ViewBag.CollectionId">Edit</a>
-                                <a class="btn btn-sm btn-danger" asp-action="Delete" asp-route-itemId="@Model.Items[i].Id" asp-route-name="@ViewBag.Name" asp-route-id="@ViewBag.CollectionId">Delete</a>
+                    </div>
+                    <button id="2-filter-ref" class="border-0"><i class="fa fa-filter"></i></button>
+                </div>
+            </th>
+            @for (int j = 3; j < Model.optFields[0].Count + 3; j++)
+            {
+                <th>
+                    <div class="col">
+                        <div id="@j-sort">
+                            <p style="white-space:nowrap" class="m-0">
+                                @Model.optFields[0][j - 3]
+                                <i class="fa fa-chevron-down col-1" aria-hidden="true"></i>
+                            </p>
+                        </div>
+                        <div id="@j-filter" class="customerTooltip">
+                            <div class="auth-form row-col-8 p-3">
+                                <div class="row  table-filters">
+                                    <input type="number" class="form-control" placeholder="Form" name="@j-filter-input">
+                                    <input type="number" class="form-control" placeholder="To" name="@j-filter-input">
 
-                            </td>
-                        </tr>
+                                </div>
+                                <div class="row justify-content-around">
+                                    <button class="btn btn-sm btn-success m-2 col-5" id="@j-filter-exec">Execute Filter</button>
+                                    <button class="btn btn-sm btn-danger m-2 col-5" id="@j-filter-delete">Delete Filter</button>
+                                </div>
+                            </div>
+                        </div>
+                        <button id="@j-filter-ref" class="border-0"><i class="fa fa-filter"></i></button>
+                    </div>
+                </th>
+            }
+            @for (int j = 3 + Model.optFields[0].Count; j < Model.optFields[1].Count + Model.optFields[0].Count + 3; j++)
+            {
+                <th>
+                    <div class="col">
+                        <div id="@j-sort">
+                            <p style="white-space:nowrap" class="m-0">
+                                @Model.optFields[1][j - Model.optFields[0].Count - 3]
+                                <i class="fa fa-chevron-down col-1" aria-hidden="true"></i>
+                            </p>
+                        </div>
+                        <div id="@j-filter" class="customerTooltip">
+                            <div class="auth-form row-col-8 p-3">
+                                <div class="row  table-filters">
+                                    <input type="text" class="form-control" name="@j-filter-input">
+                                </div>
+                                <div class="row justify-content-around">
+                                    <button class="btn btn-sm btn-success m-2 col-5" id="@j-filter-exec">Execute Filter</button>
+                                    <button class="btn btn-sm btn-danger m-2 col-5" id="@j-filter-delete">Delete Filter</button>
+                                </div>
+                            </div>
+                        </div>
+                        <button id="@j-filter-ref" class="border-0"><i class="fa fa-filter"></i></button>
+                    </div>
+                </th>
+            }
+            @for (int j = 3 + Model.optFields[0].Count + Model.optFields[1].Count; j < Model.optFields[2].Count + 3 + Model.optFields[0].Count + Model.optFields[1].Count; j++)
+            {
+                <th>
+                    <div class="col">
+                        <div id="@j-sort">
+                            <p style="white-space:nowrap" class="m-0">
+                                @Model.optFields[2][j - (3 + Model.optFields[0].Count + Model.optFields[1].Count)]
+                                <i class="fa fa-chevron-down col-1" aria-hidden="true"></i>
+                            </p>
+                        </div>
+                        <div id="@j-filter" class="customerTooltip">
+                            <div class="auth-form row-col-8 p-3">
+                                <div class="row  table-filters">
+                                    <input type="text" class="form-control" name="@j-filter-input">
+                                </div>
+                                <div class="row justify-content-around">
+                                    <button class="btn btn-sm btn-success m-2 col-5" id="@j-filter-exec">Execute Filter</button>
+                                    <button class="btn btn-sm btn-danger m-2 col-5" id="@j-filter-delete">Delete Filter</button>
+                                </div>
+                            </div>
+                        </div>
+                        <button id="@j-filter-ref" class="border-0"><i class="fa fa-filter"></i></button>
+                    </div>
+                </th>
+            }
+            @for (int j = Model.optFields[2].Count + 3 + Model.optFields[0].Count + Model.optFields[1].Count; j < Model.optFields[3].Count + Model.optFields[2].Count + 3 + Model.optFields[0].Count + Model.optFields[1].Count; j++)
+            {
+                <th>
+                    <div class="col">
+                        <div id="@j-sort">
+                            <p style="white-space:nowrap" class="m-0">
+                                @Model.optFields[3][j - (Model.optFields[2].Count + 3 + Model.optFields[0].Count + Model.optFields[1].Count)]
+                                <i class="fa fa-chevron-down col-1" aria-hidden="true"></i>
+                            </p>
+                        </div>
+                        <div id="@j-filter" class="customerTooltip">
+                            <div class="auth-form row-col-8 p-3">
+                                <div class="row  table-filters">
+                                    <input type="datetime-local" class="form-control" name="@j-filter-input">
+                                    <input type="datetime-local" class="form-control" name="@j-filter-input">
+                                </div>
+                                <div class="row justify-content-around">
+                                    <button class="btn btn-sm btn-success m-2 col-5" id="@j-filter-exec">Execute Filter</button>
+                                    <button class="btn btn-sm btn-danger m-2 col-5" id="@j-filter-delete">Delete Filter</button>
+                                </div>
+                            </div>
+                        </div>
+                        <button id="@j-filter-ref" class="border-0"><i class="fa fa-filter"></i></button>
+                    </div>
+                </th>
+            }
+            @for (int j = Model.optFields[3].Count + Model.optFields[2].Count + 3 + Model.optFields[0].Count + Model.optFields[1].Count; j < Model.optFields[4].Count + Model.optFields[3].Count + Model.optFields[2].Count + 3 + Model.optFields[0].Count + Model.optFields[1].Count; j++)
+            {
+                <th>
+                    <div class="col">
+                        <div id="@j-sort">
+                            <p style="white-space:nowrap" class="m-0">
+                                @Model.optFields[4][j - (Model.optFields[3].Count + Model.optFields[2].Count + 3 + Model.optFields[0].Count + Model.optFields[1].Count)]
+                                <i class="fa fa-chevron-down col-1" aria-hidden="true"></i>
+                            </p>
+                        </div>
+                        <div id="@j-filter" class="customerTooltip">
+                            <div class="auth-form row-col-8 p-3">
+                                <div class="row  table-filters">
+                                    <select name="@j-filter-input">
+                                        <option value="All" selected>All</option>
+                                        <option value="Yes">Checked</option>
+                                        <option value="No">Unchecked</option>
+                                    </select>
+                                </div>
+                                <div class="row justify-content-around">
+                                    <button class="btn btn-sm btn-success m-2 col-5" id="@j-filter-exec">Execute Filter</button>
+                                    <button class="btn btn-sm btn-danger m-2 col-5" id="@j-filter-delete">Delete Filter</button>
+                                </div>
+                            </div>
+                        </div>
+                        <button id="@j-filter-ref" class="border-0"><i class="fa fa-filter"></i></button>
+                    </div>
+                </th>
+            }
+            <th>
+                Actions
+            </th>
+        </tr>
+        <tbody class="ui-sortable">
+            @for (int i = 0; i < Model.Items.Count; i++)
+            {
+                <tr class='table-data overflow-visible'>
+                    <td><a data-name="1-sort-data" asp-controller="Item" asp-action="Index" asp-route-name="@ViewBag.Name" asp-route-itemId="@Model.Items[i].Id" asp-route-id="@ViewBag.CollectionId">@Model.Items[i].Name</a></td>
+                    <td data-name="2-sort-data">
+                        @for (int j = 0; j < Model.Items[i].Tags.Count; j++)
+                        {
+                            <span>@Model.Items[i].Tags[j].Text</span>
+                        }
+                    </td>
+                    @for (int j = 0; j < Model.Items[i].DigitFields.Count; j++)
+                    {
+                        <td data-name="@(3+j)-sort-data">@Model.Items[i].DigitFields[j].Digit</td>
                     }
-                </table>
-        </form>
+                    @for (int j = 0; j < Model.Items[i].TextFields.Count; j++)
+                    {
+                        <td data-name="@(3+j + Model.Items[i].DigitFields.Count)-sort-data">
+                            @Model.Items[i].TextFields[j].Text
+                        </td>
+                    }
+                    @for (int j = 0; j < Model.Items[i].WordFields.Count; j++)
+                    {
+                        <td data-name="@(3+j + Model.Items[i].DigitFields.Count + Model.Items[i].TextFields.Count)-sort-data">
+                            @Model.Items[i].WordFields[j].Word
+                        </td>
+                    }
+                    @for (int j = 0; j < Model.Items[i].DateFields.Count; j++)
+                    {
+                        <td data-name="@(3+j + Model.Items[i].DigitFields.Count + Model.Items[i].TextFields.Count + Model.Items[i].WordFields.Count)-sort-data">
+                            @Model.Items[i].DateFields[j].Date.Year-@Model.Items[i].DateFields[j].Date.Month-@Model.Items[i].DateFields[j].Date.Day
+                            @Model.Items[i].DateFields[j].Date.Hour:@Model.Items[i].DateFields[j].Date.Minute:@Model.Items[i].DateFields[j].Date.Second
+                        </td>
+                    }
+                    @for (int j = 0; j < Model.Items[i].CheckboxFields.Count; j++)
+                    {
+                        <td data-name="@(3+j + Model.Items[i].DigitFields.Count + Model.Items[i].TextFields.Count + Model.Items[i].WordFields.Count + Model.Items[i].DateFields.Count)-sort-data">
+                            @if (Model.Items[i].CheckboxFields[j].Checkbox)
+                            {
+                                <input type="checkbox" checked="checked" />
+                                <p style="display:none">Yes</p>
+                            }
+                            else
+                            {
+                                <input type="checkbox" />
+                                <p style="display:none">No</p>
+                            }
+                        </td>
+                    }
+                    <td class="overflow-visible">
+                        <div class="row p-3">
+                            <a class="btn btn-sm btn-outline-primary mb-2" asp-action="Edit" asp-route-name="@ViewBag.Name" asp-route-itemId="@Model.Items[i].Id" asp-route-id="@ViewBag.CollectionId">Edit</a>
+                            <a class="btn btn-sm btn-outline-danger" asp-action="Delete" asp-route-itemId="@Model.Items[i].Id" asp-route-name="@ViewBag.Name" asp-route-id="@ViewBag.CollectionId">Delete</a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 </div>
 <div class="row">
     <form method="get">
         <button asp-action="Create" asp-route-name="@ViewBag.Name" asp-route-id="@ViewBag.CollectionId" class="btn btn-danger">Create</button>
     </form>
 </div>
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/lib/bootstrap-5.0.0-beta1-dist/js/bootstrap.min.js"></script>
 <script>
-    function CreateSort(id) {
-        sortBy = document.getElementById("sort-by");
-        sortOrder = document.getElementById("sort-order");
-        if (@Model.SortBy == id) {
-            sortOrder.value = @Model.SortOrder*-1;
-            console.log(sortOrder.value)
-        }
-        else {
-            sortOrder.value = 1;
-            sortBy.value = id;
+    sortId = 0;
+    sortOrder = 1;
+    filterIds = [];
+    if (@Model.Items.Count != 0) {
+        filterIds = Array(2 + @Model.Items[0].DigitFields.Count+
+                                         @Model.Items[0].TextFields.Count+
+                                         @Model.Items[0].WordFields.Count+
+                                         @Model.Items[0].CheckboxFields.Count+
+                                         @Model.Items[0].DateFields.Count).fill(1).map((v, i) => `${i + 1}`);
+    }
+    AddFilters(filterIds);
+    function AddFilters(filterIds) {
+        for (let curId of filterIds) {
+            $(`#${curId}-filter-ref`).on('click', function () {
+                CreateFilter(`${curId}-filter`);
+                filterIds.forEach(id => {
+                    el = document.getElementById(`${id}-filter-ref`),
+                        elClone = el.cloneNode(true);
+                    el.parentNode.replaceChild(elClone, el);
+                })
+            })
+            $(`#${curId}-filter-exec`).on('click', function () {
+                filterTable($(this).parents('table'));
+                DestroyFilter(`${curId}-filter`);
+                filterIds.forEach(id => {
+                    $(`#${id}-filter-ref`).on('click', function () {
+                        CreateFilter(`${id}-filter`);
+                        filterIds.forEach(id => {
+                            el = document.getElementById(`${id}-filter-ref`),
+                                elClone = el.cloneNode(true);
+                            el.parentNode.replaceChild(elClone, el);
+                        })
+                    })
+                })
+            });
+            $(`#${curId}-filter-delete`).on('click', function () {
+                document.getElementsByName(`${curId}-filter-input`).forEach(el => el.value = null);
+                filterTable($(this).parents('table'));
+                DestroyFilter(`${curId}-filter`);
+                filterIds.forEach(id => {
+                    $(`#${id}-filter-ref`).on('click', function () {
+                        CreateFilter(`${id}-filter`);
+                        filterIds.forEach(id => {
+                            el = document.getElementById(`${id}-filter-ref`),
+                                elClone = el.cloneNode(true);
+                            el.parentNode.replaceChild(elClone, el);
+                        })
+                    })
+                })
+            })
+            $(`#${curId}-sort`).on('click', function () {
+                if (sortId == curId) {
+                    $(`#${sortId}-sort`).find('i').removeClass(sortOrder == -1 ? 'fa-chevron-up' : 'fa-chevron-down')
+                    $(`#${sortId}-sort`).find('i').addClass(sortOrder == -1 ? 'fa-chevron-down' : 'fa-chevron-up')
+                    sortOrder *= -1;
+                }
+                else {
+                    $(`#${sortId}-sort`).css("color", "black")
+                    $(`#${curId}-sort`).css("color", "blue")
+                    $(`#${sortId}-sort`).find('i').removeClass('fa-chevron-up')
+                    sortOrder == -1 ? $(`#${sortId}-sort`).find('i').addClass( 'fa-chevron-down'):0;
+                    sortOrder = 1;
+                    sortId = curId;
+                }
+                $('.ui-sortable tr').sort(function (a, b) {
+                    if (curId == 2) {
+                        return ($(a).find(`[data-name=${curId}-sort-data]`).html().split(' ').length -
+                            $(b).find(`[data-name=${curId}-sort-data]`).html().split(' ').length) * sortOrder;
+                    }
+                    if ((curId > 2 && curId < +@(Model.Items[0].DigitFields.Count+3)) ||
+                        (curId >= +@(Model.Items[0].DigitFields.Count+
+                                    Model.Items[0].WordFields.Count +
+                                        Model.Items[0].TextFields.Count + 3)
+                        && curId < +@(Model.Items[0].DigitFields.Count+
+                                    Model.Items[0].WordFields.Count +
+                                    Model.Items[0].DateFields.Count +
+                                        Model.Items[0].TextFields.Count + 3))) {
+                        return (new Date($(a).find(`[data-name=${curId}-sort-data]`).html()) -
+                            new Date($(b).find(`[data-name=${curId}-sort-data]`).html())) * sortOrder;
+                    }
+                    return $(a).find(`[data-name=${curId}-sort-data]`).html().localeCompare($(b).find(`[data-name=${curId}-sort-data]`).html()) * sortOrder;
+                })
+                    .appendTo('.ui-sortable');
+            })
         }
     }
+    function DestroyFilter(id) {
+        tooltip = document.getElementById(`${id}`);
+        tooltip.style.display = "none"
+    }
+    function CreateFilter(id) {
+        button = document.getElementById(`${id}-ref`);
+        tooltip = document.getElementById(`${id}`);
+        tooltip.style.display = "flex";
+    }
+    function filterTable($table) {
+        var $filters = $table.find('.table-filters');
+        var $rows = $table.find('.table-data');
+        $rows.each(function (rowIndex) {
+            var valid = true;
+            $(this).find('td').each(function (colIndex) {
+                if ($filters.eq(colIndex).find('input').length === 1) {
+                    if ($filters.eq(colIndex).find('input').val()) {
+                        $text = $(this).html().replace(/<\/?[^>]+>/g, ' ');
+                        if ($text.toLowerCase().split(' ').filter(x =>
+                            $filters.eq(colIndex).find('input').val().toLowerCase().split(' ').filter(y => x.indexOf(y) !== -1).length !== 0).length === 0) {
+                            valid = false;
+                        }
+                    }
+                }
+                else if ($filters.eq(colIndex).find('input').length === 2) {
+                    if ($filters.eq(colIndex).find('input').eq(0).val() || $filters.eq(colIndex).find('input').eq(1).val()) {
+                        $text = $(this).html().replace(/<\/?[^>]+>/g, ' ').trim();
+                        if ($filters.eq(colIndex).find('input').eq(0).val()) {
+                            valid = valid && new Date($text.toLowerCase()) >
+                                new Date($filters.eq(colIndex).find('input').eq(0).val().toLowerCase())
+                        }
+                        if ($filters.eq(colIndex).find('input').eq(1).val()) {
+                            valid = valid && new Date($text.toLowerCase()) <
+                                new Date($filters.eq(colIndex).find('input').eq(1).val().toLowerCase())
+                        }
+                    }
+                }
+                else {
+                    if ($filters.eq(colIndex).find('select').val()) {
+                        $text = $(this).html().replace(/<\/?[^>]+>/g, ' ').trim();
+                        if ($filters.eq(colIndex).find('select').val().toLowerCase() != 'all' && $text.toLowerCase() !=
+                            $filters.eq(colIndex).find('select').val().toLowerCase()) {
+                            valid = false;
+                        }
+                    }
+                }
+            });
+            if (valid === true) {
+                $(this).css('display', '');
+            } else {
+                $(this).css('display', 'none');
+            }
+        });
+    }
+
 </script>

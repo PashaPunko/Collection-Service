@@ -141,3 +141,9 @@ body {
     .customLook .tagify__input {
         display: none;
     }
+
+.customerTooltip {
+    display: none;
+    position: absolute;
+    min-width: 40%;
+}
