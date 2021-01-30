@@ -81,8 +81,8 @@ namespace PostgresTest.Controllers
                 {
                     if (el.IsChecked)
                     {
-                        User user = userManager.Users.Where(u => u.Id == el.UserId).FirstOrDefault();
-                        userManager.DeleteAsync(user).Wait();
+                        User user = userManager.Users.Include(u=>u.Collections).Where(u => u.Id == el.UserId).FirstOrDefault();
+                        await userManager.DeleteAsync(user);
                     }
                 };
                 return RedirectToAction("Index", "Admin");
