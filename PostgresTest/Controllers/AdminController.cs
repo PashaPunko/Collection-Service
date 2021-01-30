@@ -19,11 +19,13 @@ namespace PostgresTest.Controllers
         private RoleManager<IdentityRole> roleManager;
         private UserManager<User> userManager;
         private SignInManager<User> signInManager;
-        public AdminController(RoleManager<IdentityRole> roleManager, UserManager<User> userManager, SignInManager<User> signInManager)
+        private ApplicationContext bd;
+        public AdminController(RoleManager<IdentityRole> roleManager, UserManager<User> userManager, SignInManager<User> signInManager, ApplicationContext bd)
         {
             this.roleManager = roleManager;
             this.userManager = userManager;
             this.signInManager = signInManager;
+            this.bd = bd;
         }
         private async Task<bool> ValidateStatus()
         {
@@ -82,7 +84,9 @@ namespace PostgresTest.Controllers
                     if (el.IsChecked)
                     {
                         User user = userManager.Users.Include(u=>u.Collections).Where(u => u.Id == el.UserId).FirstOrDefault();
+                        bd.Collections.RemoveRange(user.Collections);
                         await userManager.DeleteAsync(user);
+                        bd.SaveChanges();
                     }
                 };
                 return RedirectToAction("Index", "Admin");
