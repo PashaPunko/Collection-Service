@@ -2,8 +2,9 @@
 @{
     ViewBag.Title = "Список пользователей";
 }
-<div class="row m-3 align-items-center p-2">
+<div class="row m-3 align-items-start p-2 auth-form">
     <h3 class="text-center">@Model.CollectionName</h3>
+    <hr>
     <div class="col-md-4 justify-content-center align-items-center">
         <p>@Model.Theme</p>
         <p class="markdown-show">@Model.Discription</p>
@@ -13,251 +14,261 @@
     </div>
 </div>
 <hr>
-<div class="row mt-4 mb-1 justify-content-center">
-    <form method="get">
-        <button asp-action="Create" asp-route-name="@ViewBag.Name" asp-route-id="@ViewBag.CollectionId" class="btn btn-outline-success">Create New Item</button>
-    </form>
-</div>
-<div style="overflow-x:visible;">
-    <table id="collection" class="table table-striped overflow-visible">
-        <tr>
-            <th>
-                <div class="col">
-                    <div id="1-sort"><p style="white-space:nowrap" class="m-0">Name<i class="fa fa-chevron-down col-1" aria-hidden="true"></i></p></div>
-                    <div id="1-filter" class="customerTooltip">
-                        <div class="auth-form row-col-8 p-3">
-                            <div class="row table-filters">
-                                <input type="text" class="form-control" name="1-filter-input">
-                            </div>
-                            <div class="row justify-content-around">
-                                <button class="btn btn-sm btn-success m-2 col-5" id="1-filter-exec">Execute Filter</button>
-                                <button class="btn btn-sm btn-danger m-2 col-5" id="1-filter-delete">Delete Filter</button>
-                            </div>
-                        </div>
-                    </div>
-                    <button id="1-filter-ref" class="border-0"><i class="fa fa-filter"></i></button>
-                </div>
-            </th>
-            <th>
-                <div class="col">
-                    <div id="2-sort"><p style="white-space:nowrap" class="m-0">Tags<i class="fa fa-chevron-down col-1" aria-hidden="true"></i></p></div>
-                    <div id="2-filter" class="customerTooltip">
-                        <div class="auth-form row-col-8 p-3">
-                            <div class="row  table-filters">
-                                <input type="text" class="form-control" name="2-filter-input">
-                            </div>
-                            <div class="row justify-content-around">
-                                <button class="btn btn-sm btn-success m-2 col-5" id="2-filter-exec">Execute Filter</button>
-                                <button class="btn btn-sm btn-danger m-2 col-5" id="2-filter-delete">Delete Filter</button>
-                            </div>
-                        </div>
-                    </div>
-                    <button id="2-filter-ref" class="border-0"><i class="fa fa-filter"></i></button>
-                </div>
-            </th>
-            @for (int j = 3; j < Model.optFields[0].Count + 3; j++)
-            {
+@if (Model.Owner == ViewBag.Name)
+{
+    <div class="row mt-4 mb-1 justify-content-center">
+        <form method="get">
+            <button asp-action="Create" asp-route-name="@ViewBag.Name" asp-route-id="@ViewBag.CollectionId" class="btn btn-outline-success">Create New Item</button>
+        </form>
+    </div>
+}
+    <div style="overflow-x:visible;">
+        <table id="collection" class="table table-striped overflow-visible">
+            <tr>
                 <th>
                     <div class="col">
-                        <div id="@j-sort">
-                            <p style="white-space:nowrap" class="m-0">
-                                @Model.optFields[0][j - 3]
-                                <i class="fa fa-chevron-down col-1" aria-hidden="true"></i>
-                            </p>
+                        <div id="1-sort"><p style="white-space:nowrap" class="m-0">Name<i class="fa fa-chevron-down col-1" aria-hidden="true"></i></p></div>
+                        <div id="1-filter" class="customerTooltip">
+                            <div class="auth-form row-col-8 p-3">
+                                <div class="row table-filters">
+                                    <input type="text" class="form-control" name="1-filter-input">
+                                </div>
+                                <div class="row justify-content-around">
+                                    <button class="btn btn-sm btn-success m-2 col-5" id="1-filter-exec">Execute Filter</button>
+                                    <button class="btn btn-sm btn-danger m-2 col-5" id="1-filter-delete">Delete Filter</button>
+                                </div>
+                            </div>
                         </div>
-                        <div id="@j-filter" class="customerTooltip">
+                        <button id="1-filter-ref" class="border-0"><i class="fa fa-filter"></i></button>
+                    </div>
+                </th>
+                <th>
+                    <div class="col">
+                        <div id="2-sort"><p style="white-space:nowrap" class="m-0">Tags<i class="fa fa-chevron-down col-1" aria-hidden="true"></i></p></div>
+                        <div id="2-filter" class="customerTooltip">
                             <div class="auth-form row-col-8 p-3">
                                 <div class="row  table-filters">
-                                    <input type="number" class="form-control" placeholder="Form" name="@j-filter-input">
-                                    <input type="number" class="form-control" placeholder="To" name="@j-filter-input">
+                                    <input type="text" class="form-control" name="2-filter-input">
+                                </div>
+                                <div class="row justify-content-around">
+                                    <button class="btn btn-sm btn-success m-2 col-5" id="2-filter-exec">Execute Filter</button>
+                                    <button class="btn btn-sm btn-danger m-2 col-5" id="2-filter-delete">Delete Filter</button>
+                                </div>
+                            </div>
+                        </div>
+                        <button id="2-filter-ref" class="border-0"><i class="fa fa-filter"></i></button>
+                    </div>
+                </th>
+                @for (int j = 3; j < Model.optFields[0].Count + 3; j++)
+                {
+                    <th>
+                        <div class="col">
+                            <div id="@j-sort">
+                                <p style="white-space:nowrap" class="m-0">
+                                    @Model.optFields[0][j - 3]
+                                    <i class="fa fa-chevron-down col-1" aria-hidden="true"></i>
+                                </p>
+                            </div>
+                            <div id="@j-filter" class="customerTooltip">
+                                <div class="auth-form row-col-8 p-3">
+                                    <div class="row  table-filters">
+                                        <input type="number" class="form-control" placeholder="Form" name="@j-filter-input">
+                                        <input type="number" class="form-control" placeholder="To" name="@j-filter-input">
 
-                                </div>
-                                <div class="row justify-content-around">
-                                    <button class="btn btn-sm btn-success m-2 col-5" id="@j-filter-exec">Execute Filter</button>
-                                    <button class="btn btn-sm btn-danger m-2 col-5" id="@j-filter-delete">Delete Filter</button>
+                                    </div>
+                                    <div class="row justify-content-around">
+                                        <button class="btn btn-sm btn-success m-2 col-5" id="@j-filter-exec">Execute Filter</button>
+                                        <button class="btn btn-sm btn-danger m-2 col-5" id="@j-filter-delete">Delete Filter</button>
+                                    </div>
                                 </div>
                             </div>
+                            <button id="@j-filter-ref" class="border-0"><i class="fa fa-filter"></i></button>
                         </div>
-                        <button id="@j-filter-ref" class="border-0"><i class="fa fa-filter"></i></button>
-                    </div>
-                </th>
-            }
-            @for (int j = 3 + Model.optFields[0].Count; j < Model.optFields[1].Count + Model.optFields[0].Count + 3; j++)
-            {
-                <th>
-                    <div class="col">
-                        <div id="@j-sort">
-                            <p style="white-space:nowrap" class="m-0">
-                                @Model.optFields[1][j - Model.optFields[0].Count - 3]
-                                <i class="fa fa-chevron-down col-1" aria-hidden="true"></i>
+                    </th>
+                }
+                @for (int j = 3 + Model.optFields[0].Count; j < Model.optFields[1].Count + Model.optFields[0].Count + 3; j++)
+                {
+                    <th>
+                        <div class="col">
+                            <div id="@j-sort">
+                                <p style="white-space:nowrap" class="m-0">
+                                    @Model.optFields[1][j - Model.optFields[0].Count - 3]
+                                    <i class="fa fa-chevron-down col-1" aria-hidden="true"></i>
+                                </p>
+                            </div>
+                            <div id="@j-filter" class="customerTooltip">
+                                <div class="auth-form row-col-8 p-3">
+                                    <div class="row  table-filters">
+                                        <input type="text" class="form-control" name="@j-filter-input">
+                                    </div>
+                                    <div class="row justify-content-around">
+                                        <button class="btn btn-sm btn-success m-2 col-5" id="@j-filter-exec">Execute Filter</button>
+                                        <button class="btn btn-sm btn-danger m-2 col-5" id="@j-filter-delete">Delete Filter</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <button id="@j-filter-ref" class="border-0"><i class="fa fa-filter"></i></button>
+                        </div>
+                    </th>
+                }
+                @for (int j = 3 + Model.optFields[0].Count + Model.optFields[1].Count; j < Model.optFields[2].Count + 3 + Model.optFields[0].Count + Model.optFields[1].Count; j++)
+                {
+                    <th>
+                        <div class="col">
+                            <div id="@j-sort">
+                                <p style="white-space:nowrap" class="m-0">
+                                    @Model.optFields[2][j - (3 + Model.optFields[0].Count + Model.optFields[1].Count)]
+                                    <i class="fa fa-chevron-down col-1" aria-hidden="true"></i>
+                                </p>
+                            </div>
+                            <div id="@j-filter" class="customerTooltip">
+                                <div class="auth-form row-col-8 p-3">
+                                    <div class="row  table-filters">
+                                        <input type="text" class="form-control" name="@j-filter-input">
+                                    </div>
+                                    <div class="row justify-content-around">
+                                        <button class="btn btn-sm btn-success m-2 col-5" id="@j-filter-exec">Execute Filter</button>
+                                        <button class="btn btn-sm btn-danger m-2 col-5" id="@j-filter-delete">Delete Filter</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <button id="@j-filter-ref" class="border-0"><i class="fa fa-filter"></i></button>
+                        </div>
+                    </th>
+                }
+                @for (int j = Model.optFields[2].Count + 3 + Model.optFields[0].Count + Model.optFields[1].Count; j < Model.optFields[3].Count + Model.optFields[2].Count + 3 + Model.optFields[0].Count + Model.optFields[1].Count; j++)
+                {
+                    <th>
+                        <div class="col">
+                            <div id="@j-sort">
+                                <p style="white-space:nowrap" class="m-0">
+                                    @Model.optFields[3][j - (Model.optFields[2].Count + 3 + Model.optFields[0].Count + Model.optFields[1].Count)]
+                                    <i class="fa fa-chevron-down col-1" aria-hidden="true"></i>
+                                </p>
+                            </div>
+                            <div id="@j-filter" class="customerTooltip">
+                                <div class="auth-form row-col-8 p-3">
+                                    <div class="row  table-filters">
+                                        <input type="datetime-local" class="form-control" name="@j-filter-input">
+                                        <input type="datetime-local" class="form-control" name="@j-filter-input">
+                                    </div>
+                                    <div class="row justify-content-around">
+                                        <button class="btn btn-sm btn-success m-2 col-5" id="@j-filter-exec">Execute Filter</button>
+                                        <button class="btn btn-sm btn-danger m-2 col-5" id="@j-filter-delete">Delete Filter</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <button id="@j-filter-ref" class="border-0"><i class="fa fa-filter"></i></button>
+                        </div>
+                    </th>
+                }
+                @for (int j = Model.optFields[3].Count + Model.optFields[2].Count + 3 + Model.optFields[0].Count + Model.optFields[1].Count; j < Model.optFields[4].Count + Model.optFields[3].Count + Model.optFields[2].Count + 3 + Model.optFields[0].Count + Model.optFields[1].Count; j++)
+                {
+                    <th>
+                        <div class="col">
+                            <div id="@j-sort">
+                                <p style="white-space:nowrap" class="m-0">
+                                    @Model.optFields[4][j - (Model.optFields[3].Count + Model.optFields[2].Count + 3 + Model.optFields[0].Count + Model.optFields[1].Count)]
+                                    <i class="fa fa-chevron-down col-1" aria-hidden="true"></i>
+                                </p>
+                            </div>
+                            <div id="@j-filter" class="customerTooltip">
+                                <div class="auth-form row-col-8 p-3">
+                                    <div class="row  table-filters">
+                                        <select name="@j-filter-input">
+                                            <option value="All" selected>All</option>
+                                            <option value="Yes">Checked</option>
+                                            <option value="No">Unchecked</option>
+                                        </select>
+                                    </div>
+                                    <div class="row justify-content-around">
+                                        <button class="btn btn-sm btn-success m-2 col-5" id="@j-filter-exec">Execute Filter</button>
+                                        <button class="btn btn-sm btn-danger m-2 col-5" id="@j-filter-delete">Delete Filter</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <button id="@j-filter-ref" class="border-0"><i class="fa fa-filter"></i></button>
+                        </div>
+                    </th>
+                }
+                @if (Model.Owner == ViewBag.Name)
+                {
+                    <th>
+                        Actions
+                    </th>
+                }
+            </tr>
+            <tbody class="ui-sortable">
+                @for (int i = 0; i < Model.Items.Count; i++)
+                {
+                    <tr class='table-data overflow-x-visible'>
+                        <td><a data-name="1-sort-data" asp-controller="Item" asp-action="Index" asp-route-name="@ViewBag.Name" asp-route-itemId="@Model.Items[i].Id" asp-route-id="@ViewBag.CollectionId">@Model.Items[i].Name</a></td>
+                        <td data-name="2-sort-data">
+                            <p style="line-height:300%;">
+                                @for (int j = 0; j < Model.Items[i].Tags.Count; j++)
+                                {
+                                    <span class="tag">@Model.Items[i].Tags[j].Text</span>
+                                }
                             </p>
-                        </div>
-                        <div id="@j-filter" class="customerTooltip">
-                            <div class="auth-form row-col-8 p-3">
-                                <div class="row  table-filters">
-                                    <input type="text" class="form-control" name="@j-filter-input">
-                                </div>
-                                <div class="row justify-content-around">
-                                    <button class="btn btn-sm btn-success m-2 col-5" id="@j-filter-exec">Execute Filter</button>
-                                    <button class="btn btn-sm btn-danger m-2 col-5" id="@j-filter-delete">Delete Filter</button>
-                                </div>
-                            </div>
-                        </div>
-                        <button id="@j-filter-ref" class="border-0"><i class="fa fa-filter"></i></button>
-                    </div>
-                </th>
-            }
-            @for (int j = 3 + Model.optFields[0].Count + Model.optFields[1].Count; j < Model.optFields[2].Count + 3 + Model.optFields[0].Count + Model.optFields[1].Count; j++)
-            {
-                <th>
-                    <div class="col">
-                        <div id="@j-sort">
-                            <p style="white-space:nowrap" class="m-0">
-                                @Model.optFields[2][j - (3 + Model.optFields[0].Count + Model.optFields[1].Count)]
-                                <i class="fa fa-chevron-down col-1" aria-hidden="true"></i>
-                            </p>
-                        </div>
-                        <div id="@j-filter" class="customerTooltip">
-                            <div class="auth-form row-col-8 p-3">
-                                <div class="row  table-filters">
-                                    <input type="text" class="form-control" name="@j-filter-input">
-                                </div>
-                                <div class="row justify-content-around">
-                                    <button class="btn btn-sm btn-success m-2 col-5" id="@j-filter-exec">Execute Filter</button>
-                                    <button class="btn btn-sm btn-danger m-2 col-5" id="@j-filter-delete">Delete Filter</button>
-                                </div>
-                            </div>
-                        </div>
-                        <button id="@j-filter-ref" class="border-0"><i class="fa fa-filter"></i></button>
-                    </div>
-                </th>
-            }
-            @for (int j = Model.optFields[2].Count + 3 + Model.optFields[0].Count + Model.optFields[1].Count; j < Model.optFields[3].Count + Model.optFields[2].Count + 3 + Model.optFields[0].Count + Model.optFields[1].Count; j++)
-            {
-                <th>
-                    <div class="col">
-                        <div id="@j-sort">
-                            <p style="white-space:nowrap" class="m-0">
-                                @Model.optFields[3][j - (Model.optFields[2].Count + 3 + Model.optFields[0].Count + Model.optFields[1].Count)]
-                                <i class="fa fa-chevron-down col-1" aria-hidden="true"></i>
-                            </p>
-                        </div>
-                        <div id="@j-filter" class="customerTooltip">
-                            <div class="auth-form row-col-8 p-3">
-                                <div class="row  table-filters">
-                                    <input type="datetime-local" class="form-control" name="@j-filter-input">
-                                    <input type="datetime-local" class="form-control" name="@j-filter-input">
-                                </div>
-                                <div class="row justify-content-around">
-                                    <button class="btn btn-sm btn-success m-2 col-5" id="@j-filter-exec">Execute Filter</button>
-                                    <button class="btn btn-sm btn-danger m-2 col-5" id="@j-filter-delete">Delete Filter</button>
-                                </div>
-                            </div>
-                        </div>
-                        <button id="@j-filter-ref" class="border-0"><i class="fa fa-filter"></i></button>
-                    </div>
-                </th>
-            }
-            @for (int j = Model.optFields[3].Count + Model.optFields[2].Count + 3 + Model.optFields[0].Count + Model.optFields[1].Count; j < Model.optFields[4].Count + Model.optFields[3].Count + Model.optFields[2].Count + 3 + Model.optFields[0].Count + Model.optFields[1].Count; j++)
-            {
-                <th>
-                    <div class="col">
-                        <div id="@j-sort">
-                            <p style="white-space:nowrap" class="m-0">
-                                @Model.optFields[4][j - (Model.optFields[3].Count + Model.optFields[2].Count + 3 + Model.optFields[0].Count + Model.optFields[1].Count)]
-                                <i class="fa fa-chevron-down col-1" aria-hidden="true"></i>
-                            </p>
-                        </div>
-                        <div id="@j-filter" class="customerTooltip">
-                            <div class="auth-form row-col-8 p-3">
-                                <div class="row  table-filters">
-                                    <select name="@j-filter-input">
-                                        <option value="All" selected>All</option>
-                                        <option value="Yes">Checked</option>
-                                        <option value="No">Unchecked</option>
-                                    </select>
-                                </div>
-                                <div class="row justify-content-around">
-                                    <button class="btn btn-sm btn-success m-2 col-5" id="@j-filter-exec">Execute Filter</button>
-                                    <button class="btn btn-sm btn-danger m-2 col-5" id="@j-filter-delete">Delete Filter</button>
-                                </div>
-                            </div>
-                        </div>
-                        <button id="@j-filter-ref" class="border-0"><i class="fa fa-filter"></i></button>
-                    </div>
-                </th>
-            }
-            <th>
-                Actions
-            </th>
-        </tr>
-        <tbody class="ui-sortable">
-            @for (int i = 0; i < Model.Items.Count; i++)
-            {
-                <tr class='table-data overflow-x-visible'>
-                    <td><a data-name="1-sort-data" asp-controller="Item" asp-action="Index" asp-route-name="@ViewBag.Name" asp-route-itemId="@Model.Items[i].Id" asp-route-id="@ViewBag.CollectionId">@Model.Items[i].Name</a></td>
-                    <td data-name="2-sort-data">
-                        <p style="line-height:300%;">
-                        @for (int j = 0; j < Model.Items[i].Tags.Count; j++)
+                        </td>
+                        @for (int j = 0; j < Model.Items[i].DigitFields.Count; j++)
                         {
-                            <span class="tag">@Model.Items[i].Tags[j].Text</span>
+                            <td data-name="@(3+j)-sort-data">@Model.Items[i].DigitFields[j].Digit</td>
                         }
-                       </p>
-                    </td>
-                    @for (int j = 0; j < Model.Items[i].DigitFields.Count; j++)
-                    {
-                        <td data-name="@(3+j)-sort-data">@Model.Items[i].DigitFields[j].Digit</td>
-                    }
-                    @for (int j = 0; j < Model.Items[i].TextFields.Count; j++)
-                    {
-                        <td data-name="@(3+j + Model.Items[i].DigitFields.Count)-sort-data" id="markdown-show-@i-@j">
-                            @Model.Items[i].TextFields[j].Text
-                        </td>
-                    }
-                    @for (int j = 0; j < Model.Items[i].WordFields.Count; j++)
-                    {
-                        <td data-name="@(3+j + Model.Items[i].DigitFields.Count + Model.Items[i].TextFields.Count)-sort-data">
-                            @Model.Items[i].WordFields[j].Word
-                        </td>
-                    }
-                    @for (int j = 0; j < Model.Items[i].DateFields.Count; j++)
-                    {
-                        <td data-name="@(3+j + Model.Items[i].DigitFields.Count + Model.Items[i].TextFields.Count + Model.Items[i].WordFields.Count)-sort-data">
-                            @Model.Items[i].DateFields[j].Date.Year-@Model.Items[i].DateFields[j].Date.Month-@Model.Items[i].DateFields[j].Date.Day
-                            @Model.Items[i].DateFields[j].Date.Hour:@Model.Items[i].DateFields[j].Date.Minute:@Model.Items[i].DateFields[j].Date.Second
-                        </td>
-                    }
-                    @for (int j = 0; j < Model.Items[i].CheckboxFields.Count; j++)
-                    {
-                        <td data-name="@(3+j + Model.Items[i].DigitFields.Count + Model.Items[i].TextFields.Count + Model.Items[i].WordFields.Count + Model.Items[i].DateFields.Count)-sort-data">
-                            @if (Model.Items[i].CheckboxFields[j].Checkbox)
-                            {
-                                <input type="checkbox" checked="checked" />
-                                <p style="display:none">Yes</p>
-                            }
-                            else
-                            {
-                                <input type="checkbox" />
-                                <p style="display:none">No</p>
-                            }
-                        </td>
-                    }
-                    <td class="overflow-visible">
-                        <div class="row p-3">
-                            <a class="btn btn-sm btn-outline-primary mb-2" asp-action="Edit" asp-route-name="@ViewBag.Name" asp-route-itemId="@Model.Items[i].Id" asp-route-id="@ViewBag.CollectionId">Edit</a>
-                            <a class="btn btn-sm btn-outline-danger" asp-action="Delete" asp-route-itemId="@Model.Items[i].Id" asp-route-name="@ViewBag.Name" asp-route-id="@ViewBag.CollectionId">Delete</a>
-                        </div>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-</div>
+                        @for (int j = 0; j < Model.Items[i].TextFields.Count; j++)
+                        {
+                            <td data-name="@(3+j + Model.Items[i].DigitFields.Count)-sort-data" id="markdown-show-@i-@j">
+                                @Model.Items[i].TextFields[j].Text
+                            </td>
+                        }
+                        @for (int j = 0; j < Model.Items[i].WordFields.Count; j++)
+                        {
+                            <td data-name="@(3+j + Model.Items[i].DigitFields.Count + Model.Items[i].TextFields.Count)-sort-data">
+                                @Model.Items[i].WordFields[j].Word
+                            </td>
+                        }
+                        @for (int j = 0; j < Model.Items[i].DateFields.Count; j++)
+                        {
+                            <td data-name="@(3+j + Model.Items[i].DigitFields.Count + Model.Items[i].TextFields.Count + Model.Items[i].WordFields.Count)-sort-data">
+                                @Model.Items[i].DateFields[j].Date.Year-@Model.Items[i].DateFields[j].Date.Month-@Model.Items[i].DateFields[j].Date.Day
+                                @Model.Items[i].DateFields[j].Date.Hour:@Model.Items[i].DateFields[j].Date.Minute:@Model.Items[i].DateFields[j].Date.Second
+                            </td>
+                        }
+                        @for (int j = 0; j < Model.Items[i].CheckboxFields.Count; j++)
+                        {
+                            <td data-name="@(3+j + Model.Items[i].DigitFields.Count + Model.Items[i].TextFields.Count + Model.Items[i].WordFields.Count + Model.Items[i].DateFields.Count)-sort-data">
+                                @if (Model.Items[i].CheckboxFields[j].Checkbox)
+                                {
+                                    <input type="checkbox" checked="checked" />
+                                    <p style="display:none">Yes</p>
+                                }
+                                else
+                                {
+                                    <input type="checkbox" />
+                                    <p style="display:none">No</p>
+                                }
+                            </td>
+                        }
+                        @if (Model.Owner == ViewBag.Name)
+                        {
+                            <td class="overflow-visible">
+                                <div class="row p-3">
+                                    <a class="btn btn-sm btn-outline-primary mb-2" asp-action="Edit" asp-route-name="@ViewBag.Name" asp-route-itemId="@Model.Items[i].Id" asp-route-id="@ViewBag.CollectionId">Edit</a>
+                                    <a class="btn btn-sm btn-outline-danger" asp-action="Delete" asp-route-itemId="@Model.Items[i].Id" asp-route-name="@ViewBag.Name" asp-route-id="@ViewBag.CollectionId">Delete</a>
+                                </div>
+                            </td>
+                        }
+                    </tr>
 
-<script src="~/lib/jquery/dist/jquery.js"></script>
-<script src="~/lib/bootstrap-5.0.0-beta1-dist/js/bootstrap.min.js"></script>
-<script src="~/lib/markdown/lib/markdown.js"></script>
-<script>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/bootstrap-5.0.0-beta1-dist/js/bootstrap.min.js"></script>
+    <script src="~/lib/markdown/lib/markdown.js"></script>
+    <script>
     for (i = 0; i < @Model.Items.Count; i++) {
         for (j = 0; j < @Model.optFields[1].Count; j++) {
             document.querySelector(`#markdown-show-${i}-${j}`).innerHTML =
@@ -407,4 +418,4 @@
         });
     }
 
-</script>
+    </script>

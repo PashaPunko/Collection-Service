@@ -26,9 +26,9 @@
                             <p class="card-text" id="markdown-show-@i">@Model.Collections[i].Description</p>
                             <hr>
                             <p class="card-text">by @Model.Collections[i].User.UserName</p>
-                            <button asp-controller="Profile" asp-action="Delete" asp-route-name="@ViewBag.Name" asp-route-id="@Model.Collections[i].Id" class="btn btn-danger">Delete</button>
-                            <button asp-controller="Profile" asp-action="Edit" asp-route-name="@ViewBag.Name" asp-route-id="@Model.Collections[i].Id" class="btn btn-primary">Edit</button>
-                            <button asp-controller="Collection" asp-action="Index" asp-route-name="@ViewBag.Name" asp-route-id="@Model.Collections[i].Id" class="btn btn-success">Details</button>
+                            <button asp-controller="Profile" asp-action="Delete" asp-route-name="@ViewBag.Name" asp-route-id="@Model.Collections[i].Id" class="btn btn-outline-danger">Delete</button>
+                            <button asp-controller="Profile" asp-action="Edit" asp-route-name="@ViewBag.Name" asp-route-id="@Model.Collections[i].Id" class="btn btn-outline-primary">Edit</button>
+                            <button asp-controller="Collection" asp-action="Index" asp-route-name="@ViewBag.Name" asp-route-id="@Model.Collections[i].Id" class="btn btn-outline-success">Details</button>
                         </div>
                     </form>
                 </div>

@@ -9,8 +9,13 @@ a.navbar-brand {
 
 /* Provide sufficient contrast against white background */
 a {
-  color: #0366d6;
+    color:steelblue;
+    text-decoration: none;
 }
+
+    a:hover {
+        color:coral;
+    }
 
 .btn-primary {
   color: #fff;
@@ -76,6 +81,9 @@ body {
 }
 .close :hover {
     color:darkgray;
+}
+hr {
+color:dimgray;
 }
 .customLook {
     --tag-bg: #0052BF;
@@ -160,4 +168,10 @@ body {
     border:2px solid green;
     margin: 5px;
     padding:3px;
+}
+.border-comment {
+    border: 4px double cornflowerblue;
+    border-right:none;
+    border-top:none;
+    border-bottom:none;
 }

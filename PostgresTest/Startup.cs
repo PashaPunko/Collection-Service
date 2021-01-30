@@ -49,12 +49,12 @@ namespace PostgresTest
             services.AddControllersWithViews();
             services.AddAuthentication().AddFacebook(opt =>
             {
-                opt.ClientId = "441229877060638";
-                opt.ClientSecret = "20796304ae1823a361a4ed6d3686a978";
+                opt.ClientId = Configuration["Credentials:Facebook:Id"];
+                opt.ClientSecret = Configuration["Credentials:Facebook:Secret"];
             }).AddGoogle(opt =>
             {
-                opt.ClientId = "608997760046-o3oeqvkpbb5mpo5v73kcm6t31rjit6oc.apps.googleusercontent.com";
-                opt.ClientSecret = "WrUCe-fAEXfC3U7u4y2v3hu5";
+                opt.ClientId = Configuration["Credentials:Google:Id"];
+                opt.ClientSecret = Configuration["Credentials:Google:Secret"];
             });
         }
 

@@ -12,29 +12,31 @@
 <div class="row mt-3 justify-content-around">
     <div class="col-md-8">
         <h3 class="text-center">Largest Collections</h3>
+        <hr>
         <div class="row m-3 justify-content-around">
             @for (int i = 0; i < Model.Collections.Count; i++)
             {
-                <div class="col-sm-5 auth-form p-0 mb-3 mt-3">
-                    <div class="card">
-                        <form method="get">
-                            <img src="@Model.Collections[i].Image" class="card-img-top" alt="">
-                            <div class="card-body">
-                                <h5 class="card-title">@Model.Collections[i].CollectionName</h5>
-                                <p class="card-theme">@Model.Collections[i].Theme</p>
-                                <p class="card-text" id="markdown-show-@i">@Model.Collections[i].Description</p>
-                                <hr>
-                                <p class="card-text">by @Model.Collections[i].User.UserName</p>
-                                <button asp-controller="Collection" asp-action="Index" asp-route-name="@ViewBag.Name" asp-route-id="@Model.Collections[i].Id" class="btn btn-success">Details</button>
-                            </div>
-                        </form>
-                    </div>
+            <div class="col-sm-5 auth-form p-0 mb-3 mt-3">
+                <div class="card">
+                    <form method="get">
+                        <img src="@Model.Collections[i].Image" class="card-img-top" alt="">
+                        <div class="card-body">
+                            <h5 class="card-title">@Model.Collections[i].CollectionName</h5>
+                            <p class="card-theme">@Model.Collections[i].Theme</p>
+                            <p class="card-text" id="markdown-show-@i">@Model.Collections[i].Description</p>
+                            <hr>
+                            <p class="card-text">by @Model.Collections[i].User.UserName</p>
+                            <button asp-controller="Collection" asp-action="Index" asp-route-name="@ViewBag.Name" asp-route-id="@Model.Collections[i].Id" class="btn btn-outline-success">Details</button>
+                        </div>
+                    </form>
                 </div>
+            </div>
             }
         </div>
     </div>
     <div class="col-md-4 justify-content-center overflow-auto">
         <h3 class="text-center">Last Added Items</h3>
+        <hr>
         <table class="table table-striped">
             <tr>
                 <th>Name</th>
@@ -43,11 +45,11 @@
             </tr>
             @for (int i = 0; i < Model.Items.Count; i++)
             {
-                <tr>
-                    <td><a asp-controller="Item" asp-action="Index" asp-route-name="@ViewBag.Name" asp-route-itemId="@Model.Items[i].Id" asp-route-id="@Model.Items[i].Collection.Id">@Model.Items[i].Name</a></td>
-                    <td><a asp-controller="Collection" asp-action="Index" asp-route-name="@ViewBag.Name" asp-route-id="@Model.Items[i].Collection.Id">@Model.Items[i].Collection.CollectionName</a></td>
-                    <td>@Model.Items[i].Collection.User.UserName</td>
-                </tr>
+            <tr>
+                <td><a asp-controller="Item" asp-action="Index" asp-route-name="@ViewBag.Name" asp-route-itemId="@Model.Items[i].Id" asp-route-id="@Model.Items[i].Collection.Id">@Model.Items[i].Name</a></td>
+                <td><a asp-controller="Collection" asp-action="Index" asp-route-name="@ViewBag.Name" asp-route-id="@Model.Items[i].Collection.Id">@Model.Items[i].Collection.CollectionName</a></td>
+                <td>@Model.Items[i].Collection.User.UserName</td>
+            </tr>
             }
         </table>
     </div>
@@ -66,7 +68,7 @@
         });
         chart.container("tag-cloude");
     chart.title("Tag Cloud Chart");
-    chart.mode("rect");
+    chart.mode("spiral");
         chart.draw();
     chart.listen("pointClick", function (e) {
         var url = window.location.href.split("/").slice(0, 3).join("/") + `/search/tag/${e.point.get("x")}/@ViewBag.Name`;

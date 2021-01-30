@@ -53,6 +53,7 @@ namespace PostgresTest.Controllers
                 Include(col => col.Items).ThenInclude(item => item.DateFields).
                 Include(col => col.Items).ThenInclude(item => item.CheckboxFields).
                 Include(col => col.Items).ThenInclude(item => item.Tags).
+                Include(col => col.User).
                 FirstOrDefault(col => col.Id == id);
             if (collection is null)
             {
@@ -72,6 +73,7 @@ namespace PostgresTest.Controllers
             model.Items = collection.Items;
             model.CollectionName = collection.CollectionName;
             model.Discription = collection.Description;
+            model.Owner = collection.User.UserName;
             model.Image = collection.Image;
             model.Theme = collection.Theme;
             ViewBag.Name = name;
@@ -125,7 +127,7 @@ namespace PostgresTest.Controllers
             if (collection != null)
             {
                 model.TagString = model.TagString is null ? "" : model.TagString;
-                model.Item.Name = model.Item.Name is null ? "" : model.Item.Name;
+                model.Item.Name = model.Item.Name is null ? "Default Name" : model.Item.Name;
                 model.Item.Collection = collection;
                 model.Item.CollectionId = collection.Id;
                 model.Item.CreationTime = DateTime.Now;
@@ -221,7 +223,7 @@ namespace PostgresTest.Controllers
                     return Redirect($"/Collection/Index/{id}/{name}");
                 }
                 model.TagString = model.TagString is null ? "" : model.TagString;
-                item.Name = model.Item.Name is null ? "" : model.Item.Name;
+                item.Name = model.Item.Name is null ? "Default Name" : model.Item.Name;
                 List<Tag> tags = new List<Tag>();
                 db.Tags.RemoveRange(item.Tags);
                 foreach (string el in model.TagString.Split(' '))

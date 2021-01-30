@@ -14,6 +14,7 @@ namespace PostgresTest.ViewModels
         public string Discription { get; set; }
         public string Theme { get; set; }
         public string Image { get; set; }
+        public string Owner { get; set; }
         public List<Item> Items { get; set; } = new List<Item>();
     }
 }

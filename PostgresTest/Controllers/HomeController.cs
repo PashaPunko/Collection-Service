@@ -46,16 +46,12 @@ namespace PostgresTest.Controllers
         [HttpGet]
         public async Task<IActionResult> Index(string? name)
         {
-            if (User.Identity.IsAuthenticated && name is null)
+            ViewBag.Status = await ValidateStatus();
+            if (User.Identity.IsAuthenticated && name is null && ViewBag.Status!=3)
             {
                 name = User.Identity.Name;
             }
-            Account account = new Account(
-                "dcdh3xiuj",
-                "792633569332572",
-                "lHTZd2k2iF6w-712lF9BXjjjgxA");
-            var cloudinary = new Cloudinary(account);
-            ViewBag.Status = await ValidateStatus();
+            var cloudinary = new Cloudinary(ApplicationConstants.cloudinaryAccount);
             ViewBag.Name = name;
             ConstantValues model = new ConstantValues();
             model.Collections = new List<Collection>(db.Collections.Include(col=>col.User).OrderBy(col => col.Items.Count).Take(20));

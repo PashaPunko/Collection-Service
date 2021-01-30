@@ -80,7 +80,7 @@ namespace PostgresTest.Controllers
         [HttpPost]
         public async Task<IActionResult> Create( string name, Collection model)
         {
-            model.CollectionName = model.CollectionName is null ? "" : model.CollectionName;
+            model.CollectionName = model.CollectionName is null ? "Default Name" : model.CollectionName;
             model.Description = model.Description is null ? "" : model.Description;
             model.Theme = model.Theme is null ? "Other" : model.Theme;
             ViewBag.Status = await ValidateStatus();
@@ -99,12 +99,8 @@ namespace PostgresTest.Controllers
         [HttpPost]
         public IActionResult Upload(string name, IFormFile file)
         {
-            Account account = new Account(
-                "dcdh3xiuj",
-                "792633569332572",
-                "lHTZd2k2iF6w-712lF9BXjjjgxA");
 
-            Cloudinary cloudinary = new Cloudinary(account);
+            Cloudinary cloudinary = new Cloudinary(ApplicationConstants.cloudinaryAccount);
             var uploadParams = new ImageUploadParams()
             {
                 File = new FileDescription(file.Name, file.OpenReadStream())
@@ -160,7 +156,7 @@ namespace PostgresTest.Controllers
             Collection coll = db.Collections.FirstOrDefault(col => col.Id == id);
             if (coll != null)
             {
-                collection.CollectionName = collection.CollectionName is null ? "" : collection.CollectionName;
+                collection.CollectionName = collection.CollectionName is null ? "Default Name" : collection.CollectionName;
                 collection.Description = collection.Description is null ? "" : collection.Description;
                 collection.Theme = collection.Theme is null ? "Other" : collection.Theme;
                 coll.Image = collection.Image;

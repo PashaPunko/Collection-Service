@@ -10,7 +10,7 @@
         </div>
     </div>
     <form method="post" asp-controller="Profile" asp-action="Create" asp-route-name="@ViewBag.Name">
-        <input type="hidden" asp-for="Image" id="input-image" value="https://res.cloudinary.com/dcdh3xiuj/image/upload/v1611675691/sample.jpg" />
+        <input type="hidden" asp-for="Image" id="input-image" value="@ApplicationConstants.DefaultPicture" />
         <div class="modal-body">
             <div class="row mb-3 justify-content-center" style="display:none;" id="pict">
                 <div class="col-sm-6 col-9">
@@ -40,7 +40,7 @@
             <div class="row mb-3 justify-content-center align-items-center">
                 <label class="col-4 control-label">Theme</label>
                 <div class="col-7">
-                    <select asp-for="Theme">
+                    <select asp-for="Theme" class="form-select">
                         @foreach (var theme in ApplicationConstants.Themes)
                         {
                             <option value="@theme">@theme</option>
@@ -96,8 +96,8 @@
 
             </div>
                 <div class="modal-footer">
-                    <input type="submit" class="btn btn-success" value="Save" />
-                    <button type="button" class="btn btn-success" onclick="window.location.href=`/Profile/Index/@ViewBag.Name`">Cancel</button>
+                    <input type="submit" class="btn btn-outline-success" value="Save" />
+                    <button type="button" class="btn btn-outline-success" onclick="window.location.href=`/Profile/Index/@ViewBag.Name`">Cancel</button>
                 </div>
 </form>
     </div>
@@ -107,7 +107,7 @@
 <script src="~/lib/markdown/lib/markdown.js"></script>
 <script>
 
-    document.querySelector('.markdown').addEventListener('change', function () {
+    document.querySelector('.markdown').addEventListener('input', function () {
         document.querySelector('#markdown-show').innerHTML = markdown.toHTML(document.querySelector('.markdown').value)
     });
 
@@ -120,7 +120,7 @@
             var _this = this;
             document.getElementById("file-remove").addEventListener("click", function () {
                 _this.removeAllFiles();
-                document.getElementById("input-image").value = "https://res.cloudinary.com/dcdh3xiuj/image/upload/v1611675691/sample.jpg";
+                document.getElementById("input-image").value = "@ApplicationConstants.DefaultPicture";
                 document.getElementById("dropz").style.display = "flex";
                 document.getElementById("pict").style.display = "none";
             });
@@ -147,5 +147,5 @@
         tagifys.push(tagify)
     }
 
-    
+
 </script>
