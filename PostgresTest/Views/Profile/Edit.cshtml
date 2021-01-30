@@ -28,8 +28,12 @@
             </div>
             <div class="row mb-3 justify-content-center align-items-center">
                 <label class="col-4 control-label">Description</label>
-                <div class="col-7">
-                    <input class="form-control" placeholder="Description" asp-for="Description" value="@Model.Description" />
+                <div class="col-4">
+                    <textarea class="markdown form-control" placeholder="Description" asp-for="Description"> 
+                        @Model.Description
+                    </textarea>
+                </div>
+                <div class="col-3" id="markdown-show">
                 </div>
             </div>
             <div class="row mb-3 justify-content-center align-items-center">
@@ -50,37 +54,6 @@
                     </select>
                 </div>
             </div>
-            <div class="row mb-3 justify-content-center align-items-center">
-                <label class="col-4 control-label">Digit Fields</label>
-                <div class="col-7">
-                    <input class="form-control" placeholder="" value="@Model.OptFields[0]" disabled readonly/>
-                </div>
-            </div>
-            <div class="row mb-3 justify-content-center align-items-center">
-                <label class="col-4 control-label">Text Fields</label>
-                <div class="col-7">
-                    <input class="form-control" placeholder="" value="@Model.OptFields[1]" disabled readonly/>
-                </div>
-            </div>
-            <div class="row mb-3 justify-content-center align-items-center">
-                <label class="col-4 control-label">Line Fields</label>
-                <div class="col-7">
-                    <input class="form-control" placeholder="" value="@Model.OptFields[2]" disabled readonly/>
-                </div>
-            </div>
-            <div class="row mb-3 justify-content-center align-items-center">
-                <label class="col-4 control-label">Date Fields</label>
-                <div class="col-7">
-                    <input class="form-control" placeholder="" value="@Model.OptFields[3]" disabled readonly/>
-                </div>
-            </div>
-            <div class="row mb-3 justify-content-center align-items-center">
-                <label class="col-4 control-label">Boolean Fields</label>
-                <div class="col-7">
-                    <input class="form-control" placeholder="" value="@Model.OptFields[4]" disabled readonly/>
-                </div>
-            </div>
-
         </div>
         <div class="modal-footer">
             <input type="submit" class="btn btn-success" value="Save" />
@@ -90,7 +63,11 @@
 </div>
 <script src="~/lib/jquery/dist/jquery.js"></script>
 <script src="~/lib/dropzone-5.7.0/dist/dropzone.js"></script>
+<script src="~/lib/markdown/lib/markdown.js"></script>
 <script>
+    document.querySelector('.markdown').addEventListener('change', function () {
+        document.querySelector('#markdown-show').innerHTML = markdown.toHTML(document.querySelector('.markdown').value)
+    });
     Dropzone.options.dropz = {
         success: function (file, res) {
             document.getElementById("input-image").value = res;

@@ -2,6 +2,22 @@
 @{
     ViewBag.Title = "Список пользователей";
 }
+<div class="row m-3 align-items-center p-2">
+    <h3 class="text-center">@Model.CollectionName</h3>
+    <div class="col-md-4 justify-content-center align-items-center">
+        <p>@Model.Theme</p>
+        <p class="markdown-show">@Model.Discription</p>
+    </div>
+    <div class="col-md-4 m-2">
+        <img src="@Model.Image" class="img-fluid rounded-3"><img>
+    </div>
+</div>
+<hr>
+<div class="row mt-4 mb-1 justify-content-center">
+    <form method="get">
+        <button asp-action="Create" asp-route-name="@ViewBag.Name" asp-route-id="@ViewBag.CollectionId" class="btn btn-outline-success">Create New Item</button>
+    </form>
+</div>
 <div style="overflow-x:visible;">
     <table id="collection" class="table table-striped overflow-visible">
         <tr>
@@ -178,13 +194,15 @@
         <tbody class="ui-sortable">
             @for (int i = 0; i < Model.Items.Count; i++)
             {
-                <tr class='table-data overflow-visible'>
+                <tr class='table-data overflow-x-visible'>
                     <td><a data-name="1-sort-data" asp-controller="Item" asp-action="Index" asp-route-name="@ViewBag.Name" asp-route-itemId="@Model.Items[i].Id" asp-route-id="@ViewBag.CollectionId">@Model.Items[i].Name</a></td>
                     <td data-name="2-sort-data">
+                        <p style="line-height:300%;">
                         @for (int j = 0; j < Model.Items[i].Tags.Count; j++)
                         {
-                            <span>@Model.Items[i].Tags[j].Text</span>
+                            <span class="tag">@Model.Items[i].Tags[j].Text</span>
                         }
+                       </p>
                     </td>
                     @for (int j = 0; j < Model.Items[i].DigitFields.Count; j++)
                     {
@@ -192,7 +210,7 @@
                     }
                     @for (int j = 0; j < Model.Items[i].TextFields.Count; j++)
                     {
-                        <td data-name="@(3+j + Model.Items[i].DigitFields.Count)-sort-data">
+                        <td data-name="@(3+j + Model.Items[i].DigitFields.Count)-sort-data" id="markdown-show-@i-@j">
                             @Model.Items[i].TextFields[j].Text
                         </td>
                     }
@@ -235,24 +253,28 @@
         </tbody>
     </table>
 </div>
-<div class="row">
-    <form method="get">
-        <button asp-action="Create" asp-route-name="@ViewBag.Name" asp-route-id="@ViewBag.CollectionId" class="btn btn-danger">Create</button>
-    </form>
-</div>
+
 <script src="~/lib/jquery/dist/jquery.js"></script>
 <script src="~/lib/bootstrap-5.0.0-beta1-dist/js/bootstrap.min.js"></script>
+<script src="~/lib/markdown/lib/markdown.js"></script>
 <script>
+    for (i = 0; i < @Model.Items.Count; i++) {
+        for (j = 0; j < @Model.optFields[1].Count; j++) {
+            document.querySelector(`#markdown-show-${i}-${j}`).innerHTML =
+                markdown.toHTML(document.querySelector(`#markdown-show-${i}-${j}`).innerHTML.trim())
+        }
+    }
+    document.querySelector(`.markdown-show`).innerHTML =
+        markdown.toHTML(document.querySelector(`.markdown-show`).innerHTML.trim())
     sortId = 0;
     sortOrder = 1;
     filterIds = [];
-    if (@Model.Items.Count != 0) {
-        filterIds = Array(2 + @Model.Items[0].DigitFields.Count+
-                                         @Model.Items[0].TextFields.Count+
-                                         @Model.Items[0].WordFields.Count+
-                                         @Model.Items[0].CheckboxFields.Count+
-                                         @Model.Items[0].DateFields.Count).fill(1).map((v, i) => `${i + 1}`);
-    }
+    console.log(@Model.Items.Count)
+        filterIds = Array(2 + @Model.optFields[0].Count+
+                                         @Model.optFields[1].Count+
+                                         @Model.optFields[2].Count+
+                                         @Model.optFields[3].Count+
+                                         @Model.optFields[4].Count).fill(1).map((v, i) => `${i + 1}`);
     AddFilters(filterIds);
     function AddFilters(filterIds) {
         for (let curId of filterIds) {
@@ -309,21 +331,22 @@
                 }
                 $('.ui-sortable tr').sort(function (a, b) {
                     if (curId == 2) {
-                        return ($(a).find(`[data-name=${curId}-sort-data]`).html().split(' ').length -
-                            $(b).find(`[data-name=${curId}-sort-data]`).html().split(' ').length) * sortOrder;
+                        return ($(a).find(`[data-name=${curId}-sort-data]`).html().replace(/<\/?[^>]+>/g, ' ').split(' ').length -
+                            $(b).find(`[data-name=${curId}-sort-data]`).html().replace(/<\/?[^>]+>/g, ' ').split(' ').length) * sortOrder;
                     }
-                    if ((curId > 2 && curId < +@(Model.Items[0].DigitFields.Count+3)) ||
-                        (curId >= +@(Model.Items[0].DigitFields.Count+
-                                    Model.Items[0].WordFields.Count +
-                                        Model.Items[0].TextFields.Count + 3)
-                        && curId < +@(Model.Items[0].DigitFields.Count+
-                                    Model.Items[0].WordFields.Count +
-                                    Model.Items[0].DateFields.Count +
-                                        Model.Items[0].TextFields.Count + 3))) {
+                    if ((curId > 2 && curId < +@(Model.optFields[0].Count+3)) ||
+                        (curId >= +@(Model.optFields[0].Count+
+                                    Model.optFields[1].Count +
+                                        Model.optFields[2].Count + 3)
+                        && curId < +@(Model.optFields[4].Count+
+                                    Model.optFields[0].Count+
+                                    Model.optFields[1].Count +
+                                        Model.optFields[2].Count + 3))) {
                         return (new Date($(a).find(`[data-name=${curId}-sort-data]`).html()) -
                             new Date($(b).find(`[data-name=${curId}-sort-data]`).html())) * sortOrder;
                     }
-                    return $(a).find(`[data-name=${curId}-sort-data]`).html().localeCompare($(b).find(`[data-name=${curId}-sort-data]`).html()) * sortOrder;
+                    return $(a).find(`[data-name=${curId}-sort-data]`).html().replace(/<\/?[^>]+>/g, ' ')
+                        .localeCompare($(b).find(`[data-name=${curId}-sort-data]`).html().replace(/<\/?[^>]+>/g, ' ')) * sortOrder;
                 })
                     .appendTo('.ui-sortable');
             })

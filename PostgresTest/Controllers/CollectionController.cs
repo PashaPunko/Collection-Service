@@ -60,10 +60,20 @@ namespace PostgresTest.Controllers
             }
             for (int i = 0; i < 5; i++)
             {
-                model.optFields[i] = new List<string>(collection.OptFields[i].Split(' '));
+                if (collection.OptFields[i] is null)
+                {
+                    model.optFields[i] = new List<string>();
+                }
+                else {
+                    model.optFields[i] = new List<string>(collection.OptFields[i].Split(' '));
+                }
+                
             }
             model.Items = collection.Items;
-
+            model.CollectionName = collection.CollectionName;
+            model.Discription = collection.Description;
+            model.Image = collection.Image;
+            model.Theme = collection.Theme;
             ViewBag.Name = name;
             ViewBag.CollectionId = id;
             return View(model);
@@ -83,14 +93,18 @@ namespace PostgresTest.Controllers
                 ItemViewModel model = new ItemViewModel();
                 for (int i = 0; i < 5; i++)
                 {
-                    model.optFields[i] = new List<string>(collection.OptFields[i].Split(' '));
-
+                    if (!(collection.OptFields[i] is null))
+                        model.optFields[i] = new List<string>(collection.OptFields[i].Split(' '));
+                    else model.optFields[i] = new List<string>();
                 }
                 model.Item.DigitFields = new List<DigitField>(new DigitField[model.optFields[0].Count]);
                 model.Item.TextFields = new List<TextField>(new TextField[model.optFields[1].Count]);
                 model.Item.WordFields = new List<WordField>(new WordField[model.optFields[2].Count]);
                 model.Item.DateFields = new List<DateField>(new DateField[model.optFields[3].Count]);
                 model.Item.CheckboxFields = new List<CheckboxField>(new CheckboxField[model.optFields[4].Count]);
+                var tags = from tag in db.Tags
+                           select tag.Text;
+                model.Tags = String.Join(" ", tags.ToList().Distinct());
                 ViewBag.Name = name;
                 ViewBag.CollectionId = id;
                 return View(model);
@@ -110,20 +124,26 @@ namespace PostgresTest.Controllers
             Collection collection = db.Collections.FirstOrDefault(col => col.Id == id);
             if (collection != null)
             {
+                model.TagString = model.TagString is null ? "" : model.TagString;
+                model.Item.Name = model.Item.Name is null ? "" : model.Item.Name;
                 model.Item.Collection = collection;
                 model.Item.CollectionId = collection.Id;
                 model.Item.CreationTime = DateTime.Now;
-
                 List<Tag> tags = new List<Tag>();
                 foreach (string el in model.TagString.Split(' '))
                 {
+                    if (!(el == "" || el is null))
                     tags.Add(new Tag { Item = model.Item, ItemId = model.Item.Id, Text = el });
                 }
-                model.Item.DigitFields.ForEach(f => { f.Item = model.Item; f.ItemId = model.Item.Id; });
-                model.Item.TextFields.ForEach(f => { f.Item = model.Item; f.ItemId = model.Item.Id; });
-                model.Item.WordFields.ForEach(f => { f.Item = model.Item; f.ItemId = model.Item.Id; });
-                model.Item.DateFields.ForEach(f => { f.Item = model.Item; f.ItemId = model.Item.Id; });
-                model.Item.CheckboxFields.ForEach(f => { f.Item = model.Item; f.ItemId = model.Item.Id; });
+                model.Item.DigitFields.ForEach(f => { f.Item = model.Item; f.ItemId = model.Item.Id;});
+                model.Item.TextFields.ForEach(f => { f.Item = model.Item; f.ItemId = model.Item.Id; 
+                    f.Text = f.Text is null ? "" : f.Text;
+                });
+                model.Item.WordFields.ForEach(f => { f.Item = model.Item; f.ItemId = model.Item.Id;
+                    f.Word = f.Word is null ? "" : f.Word;
+                });
+                model.Item.DateFields.ForEach(f => { f.Item = model.Item; f.ItemId = model.Item.Id;});
+                model.Item.CheckboxFields.ForEach(f => { f.Item = model.Item; f.ItemId = model.Item.Id;});
                 db.Items.Add(model.Item);
                 db.Tags.AddRange(tags);
                 db.DigitFields.AddRange(model.Item.DigitFields);
@@ -151,7 +171,9 @@ namespace PostgresTest.Controllers
                 ItemViewModel model = new ItemViewModel();
                 for (int i = 0; i < 5; i++)
                 {
-                    model.optFields[i] = new List<string>(collection.OptFields[i].Split(' '));
+                    if (!(collection.OptFields[i] is null))
+                        model.optFields[i] = new List<string>(collection.OptFields[i].Split(' '));
+                    else model.optFields[i] = new List<string>();
                 }
                 model.Item = db.Items.Include(i => i.DigitFields).
                     Include(i => i.TextFields).
@@ -164,12 +186,11 @@ namespace PostgresTest.Controllers
                 {
                     return Redirect($"/Collection/Index/{id}/{name}");
                 }
-                List<string> tags = new List<string>();
-                for (int i = 0; i < model.Item.Tags.Count; i++)
-                {
-                    tags.Add(model.Item.Tags[i].Text);
-                }
-                model.TagString = String.Join(' ', tags);
+                List<string> tags = model.Item.Tags.ConvertAll(t=>t.Text);
+                model.TagString = String.Join(", ", tags);
+                var alltags = from tag in db.Tags
+                           select tag.Text;
+                model.Tags = String.Join(" ", alltags.ToList().Distinct());
                 ViewBag.Name = name;
                 ViewBag.CollectionId = id;
                 return View(model);
@@ -199,17 +220,19 @@ namespace PostgresTest.Controllers
                 {
                     return Redirect($"/Collection/Index/{id}/{name}");
                 }
-                item.Name = model.Item.Name;
+                model.TagString = model.TagString is null ? "" : model.TagString;
+                item.Name = model.Item.Name is null ? "" : model.Item.Name;
                 List<Tag> tags = new List<Tag>();
                 db.Tags.RemoveRange(item.Tags);
                 foreach (string el in model.TagString.Split(' '))
                 {
-                    tags.Add(new Tag { Item = item, ItemId = item.Id, Text = el });
+                    if (!(el == "" || el is null))
+                        tags.Add(new Tag { Item = item, ItemId = item.Id, Text = el });
                 }
                 db.Tags.AddRange(tags);
                 for (int i = 0; i < model.Item.TextFields.Count; i++)
                 {
-                    item.TextFields[i].Text = model.Item.TextFields[i].Text;
+                    item.TextFields[i].Text = model.Item.TextFields[i].Text is null ? "" : model.Item.TextFields[i].Text;
                 }
                 for (int i = 0; i < model.Item.DigitFields.Count; i++)
                 {
@@ -217,7 +240,7 @@ namespace PostgresTest.Controllers
                 }
                 for (int i = 0; i < model.Item.WordFields.Count; i++)
                 {
-                    item.WordFields[i].Word = model.Item.WordFields[i].Word;
+                    item.WordFields[i].Word = model.Item.WordFields[i].Word is null ? "" : model.Item.WordFields[i].Word;
                 }
                 for (int i = 0; i < model.Item.DateFields.Count; i++)
                 {

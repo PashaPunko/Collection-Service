@@ -22,7 +22,7 @@
                             <div class="card-body">
                                 <h5 class="card-title">@Model.Collections[i].CollectionName</h5>
                                 <p class="card-theme">@Model.Collections[i].Theme</p>
-                                <p class="card-text">@Model.Collections[i].Description</p>
+                                <p class="card-text" id="markdown-show-@i">@Model.Collections[i].Description</p>
                                 <hr>
                                 <p class="card-text">by @Model.Collections[i].User.UserName</p>
                                 <button asp-controller="Collection" asp-action="Index" asp-route-name="@ViewBag.Name" asp-route-id="@Model.Collections[i].Id" class="btn btn-success">Details</button>
@@ -54,7 +54,11 @@
 </div>
 <script src="https://cdn.anychart.com/releases/8.9.0/js/anychart-core.min.js"></script>
 <script src="https://cdn.anychart.com/releases/8.9.0/js/anychart-tag-cloud.min.js"></script>
+<script src="~/lib/markdown/lib/markdown.js"></script>
 <script>
+     for (i = 0; i < @Model.Collections.Count; i++) {
+         document.querySelector(`#markdown-show-${i}`).innerHTML = markdown.toHTML(document.querySelector(`#markdown-show-${i}`).innerHTML)
+    }
     var data = "@Model.Tags";
         chart = anychart.tagCloud();
         chart.data(data, {

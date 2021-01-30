@@ -19,7 +19,6 @@
                 <div class="col-3 close">
                     <i class="fa fa-times fa-2x" id="file-remove"></i>
                 </div>
-
             </div>
             <div class="row mb-3 justify-content-center align-items-center">
                 <label class="col-4 control-label">Name</label>
@@ -29,8 +28,13 @@
             </div>
             <div class="row mb-3 justify-content-center align-items-center">
                 <label class="col-4 control-label">Description</label>
-                <div class="col-7">
-                    <input class="form-control" placeholder="Description" asp-for="Description" value="@Model.Description" />
+                <div class="col-4">
+                    <textarea class="markdown form-control" placeholder="Description" asp-for="Description"> 
+                        @Model.Description
+                    </textarea>
+                </div>
+                <div class="col-3" id="markdown-show">
+
                 </div>
             </div>
             <div class="row mb-3 justify-content-center align-items-center">
@@ -56,25 +60,37 @@
                 <div class="row mb-3 justify-content-center align-items-center">
                     <label class="col-4 control-label">Text Fields</label>
                     <div class="col-7">
-                        <input class="form-control" placeholder="" asp-for="OptFields[1]" value="@Model.OptFields[1]" />
+                        <div class="row">
+                            <input class="customLook" asp-for="OptFields[1]" />
+                            <button type="button">+</button>
+                        </div>
                     </div>
                 </div>
                 <div class="row mb-3 justify-content-center align-items-center">
                     <label class="col-4 control-label">Line Fields</label>
                     <div class="col-7">
-                        <input class="form-control" placeholder="" asp-for="OptFields[2]" value="@Model.OptFields[2]" />
+                        <div class="row">
+                            <input class="customLook" asp-for="OptFields[2]" />
+                            <button type="button">+</button>
+                        </div>
                     </div>
                 </div>
                 <div class="row mb-3 justify-content-center align-items-center">
                     <label class="col-4 control-label">Date Fields</label>
                     <div class="col-7">
-                        <input class="form-control" placeholder="" asp-for="OptFields[3]" value="@Model.OptFields[3]" />
+                        <div class="row">
+                            <input class="customLook" asp-for="OptFields[3]" />
+                            <button type="button">+</button>
+                        </div>
                     </div>
                 </div>
                 <div class="row mb-3 justify-content-center align-items-center">
                     <label class="col-4 control-label">Boolean Fields</label>
                     <div class="col-7">
-                        <input class="form-control" placeholder="" asp-for="OptFields[4]" value="@Model.OptFields[4]" />
+                        <div class="row">
+                            <input class="customLook" asp-for="OptFields[4]" />
+                            <button type="button">+</button>
+                        </div>
                     </div>
                 </div>
 
@@ -88,7 +104,13 @@
 <script src="~/lib/jquery/dist/jquery.js"></script>
 <script src="~/lib/dropzone-5.7.0/dist/dropzone.js"></script>
 <script src="~/lib/yaireo/tagify/dist/tagify.min.js"></script>
+<script src="~/lib/markdown/lib/markdown.js"></script>
 <script>
+
+    document.querySelector('.markdown').addEventListener('change', function () {
+        document.querySelector('#markdown-show').innerHTML = markdown.toHTML(document.querySelector('.markdown').value)
+    });
+
     Dropzone.options.dropz = {
         success: function (file, res) {
             document.getElementById("input-image").value = res;
@@ -105,20 +127,25 @@
 
         }
     };
-    input = document.querySelector('.customLook');
-    tagify = new Tagify(input, {
-        originalInputValueFormat: valuesArr => valuesArr.map(item => item.value).join(' '),
-        dropdown: {
-            position: 'text',
-            enabled: 1
-        }
-    });
-
-    button = input.nextElementSibling;
-
-    button.addEventListener("click", onAddButtonClick)
-
-    function onAddButtonClick() {
-        tagify.addEmptyTag()
+    let inputs = $('body').find('.customLook');
+    let tagifys = []
+    for (input of inputs) {
+        let tagify = new Tagify(input, {
+            originalInputValueFormat: valuesArr => valuesArr.map(item => item.value).join(' '),
+            dropdown: {
+                position: 'text',
+                enabled: 1
+            }
+        });
+        let button = input.nextElementSibling;
+        console.log(button)
+        console.log(tagify)
+        console.log(input)
+        button.addEventListener("click",function onAddButtonClick() {
+            tagify.addEmptyTag()
+        })
+        tagifys.push(tagify)
     }
+
+    
 </script>

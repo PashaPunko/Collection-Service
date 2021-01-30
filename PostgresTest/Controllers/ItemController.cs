@@ -60,6 +60,7 @@ namespace PostgresTest.Controllers
             }
             Item item = db.Items.
                 Include(item => item.TextFields).
+                Include(item => item.Tags).
                 Include(item => item.DigitFields).
                 Include(item => item.WordFields).
                 Include(item => item.DateFields).
@@ -75,7 +76,9 @@ namespace PostgresTest.Controllers
             model.Item = item;
             for (int i = 0; i < 5; i++)
             {
+                if (!(collection.OptFields[i] is null))
                 model.optFields[i] = new List<string>(collection.OptFields[i].Split(' '));
+                else model.optFields[i] = new List<string>();
             }
             ViewBag.Name = name;
             ViewBag.CollectionId = id;
@@ -104,9 +107,14 @@ namespace PostgresTest.Controllers
         }
         [Route("Send")]
         [HttpPost]
-        public async Task Send( string itemId, string message)
+        public async Task Send(string itemId, string message, string userName)
         {
-            await hubContext.Clients.Group(itemId).SendAsync("Notify",message, User.Identity.Name);
+            var item = db.Items.FirstOrDefault(i => i.Id == Int32.Parse(itemId));
+            var comment = new Comment { User = userName, Item = item, ItemId = item.Id, Text = message};
+            item.Comments.Add(comment);
+            db.Comments.Add(comment);
+            await db.SaveChangesAsync();
+            await hubContext.Clients.Group(itemId).SendAsync("Notify",message, userName);
         }
 
     }

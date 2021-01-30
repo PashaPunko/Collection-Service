@@ -23,7 +23,7 @@
                         <div class="card-body">
                             <h5 class="card-title">@Model.Collections[i].CollectionName</h5>
                             <p class="card-theme">@Model.Collections[i].Theme</p>
-                            <p class="card-text">@Model.Collections[i].Description</p>
+                            <p class="card-text" id="markdown-show-@i">@Model.Collections[i].Description</p>
                             <hr>
                             <p class="card-text">by @Model.Collections[i].User.UserName</p>
                             <button asp-controller="Profile" asp-action="Delete" asp-route-name="@ViewBag.Name" asp-route-id="@Model.Collections[i].Id" class="btn btn-danger">Delete</button>
@@ -36,6 +36,9 @@
         }
     </div>
 </div>
+<script src="~/lib/markdown/lib/markdown.js"></script>
 <script>
-   
+     for (i = 0; i < @Model.Collections.Count; i++) {
+         document.querySelector(`#markdown-show-${i}`).innerHTML = markdown.toHTML(document.querySelector(`#markdown-show-${i}`).innerHTML)
+    }
 </script>

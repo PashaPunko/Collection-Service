@@ -6,7 +6,7 @@ namespace PostgresTest.ViewModels
 {
     public class ConstantValues
     {
-        public string Tags { get; set; }
+        public string Tags { get; set; } = "";
         public List<Item> Items { get; set; } = new List<Item>();
         public List<Collection> Collections { get; set; } = new List<Collection>();
     }

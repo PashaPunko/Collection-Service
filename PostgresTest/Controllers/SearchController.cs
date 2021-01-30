@@ -46,8 +46,8 @@ namespace PostgresTest.Controllers
         {
             ViewBag.Status = await ValidateStatus();
             List<Item> model = new List<Item>();
-            model.AddRange(db.Items.Include(i => i.Tags).Include(i => i.Collection).ThenInclude(c => c.User)
-    .Where(p => p.SearchVector.Matches(searchString))
+
+            model.AddRange(db.Items.Where(p => p.SearchVector.Matches(searchString))
     .ToList());
             var collections = db.Collections
     .Where(p => p.SearchVector.Matches(searchString)).Select(c => c.Items)
@@ -68,6 +68,11 @@ namespace PostgresTest.Controllers
             model.AddRange(db.Tags
     .Where(p => p.SearchVector.Matches(searchString)).Select(c => c.Item)
     .ToList());
+            model.ForEach(i =>
+            {
+                db.Entry(i).Reference(x => x.Collection).Load();
+                db.Entry(i.Collection).Reference(x => x.User).Load();
+            });
             ViewBag.Name = name;
             model = model.Distinct().ToList();
             return View("Index" , model);

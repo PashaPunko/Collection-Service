@@ -4,11 +4,11 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="row">
+<div class="row-cols-md-6 m-3 align-self-center justify-content-center">
         <table class="table table-striped">
             <tr>
                 <th>Name</th>
-                <th>Tags</th>
+                <th>Collection</th>
                 <th>Owner</th>
             </tr>
             @foreach (var item in Model)
@@ -16,10 +16,9 @@
                 <tr>
                     <td><a asp-controller="Item" asp-action="Index" asp-route-name="@ViewBag.Name" asp-route-itemId="@item.Id" asp-route-id="@item.Collection.Id">@item.Name</a></td>
                     <td>
-                        @for (int j = 0; j < item.Tags.Count; j++)
-                        {
-                            @item.Tags[j].Text;
-                        }
+                        <a asp-controller="Collection" asp-action="Index" asp-route-name="@ViewBag.Name" asp-route-id="@item.Collection.Id">
+                            @item.Collection.CollectionName
+                        </a>
                     </td>
                     <td>@item.Collection.User.UserName</td>
                 </tr>

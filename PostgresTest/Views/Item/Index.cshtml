@@ -3,87 +3,126 @@
     ViewBag.Title = "Список пользователей";
 }
 <div class="modal-content">
-        <div class="modal-body">
-            <div class="row mb-3 justify-content-center align-items-center">
-                <div class="col-3">
-                    <label >@Model.Item.Name</label>
-                </div>
-                <div class="col-6">
+    <div class="modal-body">
+        <div class="row mb-3 justify-content-between align-items-center p-3">
+            <div class="col-sm-3">
+                <h3 class="text-center">@Model.Item.Name</h3>
+            </div>
+            <div class="col-sm-4 m-3 justify-content-center align-items-center">
+                <div>
                     @for (int j = 0; j < Model.Item.Tags.Count; j++)
                     {
-                    <label>@Model.Item.Tags[j].Text</label>
+                        <span class="tag">@Model.Item.Tags[j].Text</span>
                     }
                 </div>
-                <div class="col-3">
-                    @if (Model.Item.Likes.FirstOrDefault(l=>l.UserName == ViewBag.Name) != null)
-                    {
-                        <button class="btn btn-danger" id="like-button">Like</button>
-                    }
-                    else
-                    {
-                        <button class="btn btn-secondary" id="like-button">Like</button>
-                    }
-                </div>
+            </div>
+            <div class="col-sm-3">
+                @if (Model.Item.Likes.FirstOrDefault(l => l.UserName == ViewBag.Name) != null)
+                {
+                    <button class="btn btn-danger" id="like-button">Like</button>
+                }
+                else
+                {
+                    <button class="btn btn-secondary" id="like-button">Like</button>
+                }
+            </div>
 
+        </div>
+        <div class="row mb-3 justify-content-around align-items-center p-3">
+            <div class="col-md-4 border-1 rounded-3 m-2 p-2">
+                @for (int j = 0; j < Model.optFields[0].Count; j++)
+                {<div class="highlite">
+                        <p><b>@Model.optFields[0][j]:</b> @Model.Item.DigitFields[j].Digit</p>
+                        <hr>
+                    </div>
+                }
             </div>
-            <div class="row mb-3 justify-content-center align-items-center">
-                <div class="col-2">
-                    @for (int j = 0; j < Model.optFields[0].Count; j++)
-                    {
-                        <div class="row">
-                            <label>@Model.optFields[0][j]:@Model.Item.DigitFields[j].Digit</label>
-                        </div>
-                    }
-                </div>
-                <div class="col-2">
-                    @for (int j = 0; j < Model.optFields[1].Count; j++)
-                    {
-                        <div class="row">
-                            <label>@Model.optFields[1][j]:@Model.Item.TextFields[j].Text</label>
-                        </div>
-                    }
-                </div>
-                <div class="col-2">
-                    @for (int j = 0; j < Model.optFields[2].Count; j++)
-                    {
-                        <div class="row">
-                            <label>@Model.optFields[2][j]:@Model.Item.WordFields[j].Word</label>
-                        </div>
-                    }
-                </div>
-                <div class="col-2">
-                    @for (int j = 0; j < Model.optFields[3].Count; j++)
-                    {
-                        <div class="row">
-                            <label>@Model.optFields[3][j]:@Model.Item.DateFields[j].Date</label>
-                        </div>
-                    }
-                </div>
-                <div class="col-2">
-                    @for (int j = 0; j < Model.optFields[4].Count; j++)
-                    {
-                        <div class="row">
-                            <label>@Model.optFields[4][j]:@Model.Item.CheckboxFields[j].Checkbox</label>
-                        </div>
-                    }
-                </div>
+            <div class="col-md-4 border-1 rounded-3 m-2 p-2">
+                @for (int j = 0; j < Model.optFields[2].Count; j++)
+                {
+                    <div class="highlite">
+                        <p><b>@Model.optFields[2][j]:</b><br>@Model.Item.WordFields[j].Word</p>
+                        <hr>
+                    </div>
+                }
+            </div>
+            <div class="col-md-4 border-1 rounded-3 m-2 p-2">
+                @for (int j = 0; j < Model.optFields[3].Count; j++)
+                {
+                    <div class="highlite">
+                        <p><b>@Model.optFields[3][j]:</b> @Model.Item.DateFields[j].Date</p>
+                        <hr>
+                    </div>
+                }
+            </div>
+            <div class="col-md-4 border-1 rounded-3 m-2 p-2">
+                @for (int j = 0; j < Model.optFields[4].Count; j++)
+                {
+                    <div class="highlite">
+                        <p>
+                            <b>
+                                @Model.optFields[4][j]:
+                            </b>
+                            @if (!Model.Item.CheckboxFields[j].Checkbox)
+                            {
+                                <i class="fa fa-times" style="color:red"></i>
+                            }
+                            else
+                            {
+                                <i class="fa fa-check" style="color:green"></i>
+                            }
+                        </p>
+                        <hr>
+                    </div>
+                }
+            </div>
+            <div class="col-md-8 border-1 rounded-3 m-2 p-2">
+                @for (int j = 0; j < Model.optFields[1].Count; j++)
+                {
+                    <div class="highlite">
+                        <p><b>@Model.optFields[1][j]:</b></p>
+                        <p id="markdown-show-@j">@Model.Item.TextFields[j].Text</p>
+                        <hr>
+                    </div>
+                
+                }
             </div>
         </div>
-        <div class="modal-footer">
-            <div class="row">
-                <label>Comments</label>
-            </div>
-            <div class="row">
-                <form method="post">
-                    <input type="text" name="message" id="messageField" />
-                    <input type="submit" value="Send" id="submitForm" />
-                </form>
-            </div>
-            <div id="chatroom"></div>
-            </div>
+    </div>
+    <div class="col-md-8 m-3 p-3">
+        <div class="row">
+            <h3 class="text-center">Comments</h3>
         </div>
+
+        <div class="col-12 justify-content-start" id="chatroom">
+            @foreach (var comment in Model.Item.Comments)
+            {
+                <div class="row">
+                    <p class="m-0"><b>@comment.User:</b></p>
+                    <p class="offset-1">@comment.Text</p>
+                </div>
+                <hr>
+            }
+        </div>
+        <div class="row justify-content-start">
+            <form method="post" class="row">
+                <div class="row justify-content-center align-items-center">
+                    <div class="col-7">
+                        <input type="text" class="form-control col-7 m-3" name="message" id="messageField" />
+                    </div>
+                    <input type="submit" class="btn btn-primary col-3 m-3" value="Send" id="submitForm" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 <script src="~/js/signalr/dist/browser/signalr.min.js"></script>
+<script src="~/lib/markdown/lib/markdown.js"></script>
 <script>
+     for (i = 0; i < @Model.optFields[1].Count; i++) {
+         document.querySelector(`#markdown-show-${i}`).innerHTML = markdown.toHTML(document.querySelector(`#markdown-show-${i}`).innerHTML)
+    }
+
     const hubConnection = new signalR.HubConnectionBuilder()
         .withUrl("/comments")
         .build();
@@ -91,13 +130,20 @@
     let connectionId = "";
     hubConnection.on('Notify', function (message, userName) {
 
-        let userNameElem = document.createElement("b");
-        userNameElem.appendChild(document.createTextNode(userName + ": "));
-        let elem = document.createElement("p");
+        let userNameElem = document.createElement("p");
+        userNameElem.classList.add("m-0");
+        userNameElem.innerHTML = `<b>${userName}:</b>`;
+        console.log(message);
+        let comment = document.createElement("p");
+        comment.classList.add("offset-1");
+        comment.innerHTML = `${message}`;
+        let elem = document.createElement("div");
+        elem.classList.add("row");
         elem.appendChild(userNameElem);
-        elem.appendChild(document.createTextNode(message));
+        elem.appendChild(comment);
+        elem.appendChild(document.createElement("hr"));
+        console.log(elem);
         document.getElementById("chatroom").appendChild(elem);
-
     });
     document.getElementById("submitForm")
         .addEventListener("click", function (e) {
@@ -106,6 +152,7 @@
             const data = new FormData();
             data.append("message", document.getElementById("messageField").value);
             data.append("itemId", @Model.Item.Id);
+            data.append("userName", "@ViewBag.Name");
             fetch("/item/send", {
                 method: "POST",
                 body: data
@@ -137,7 +184,6 @@
         const data = new FormData();
         data.append("connectionId", connectionId);
         data.append("itemId", @Model.Item.Id);
-
         fetch("/item/join", {
             method: "POST",
             body: data

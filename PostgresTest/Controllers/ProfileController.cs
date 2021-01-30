@@ -80,6 +80,9 @@ namespace PostgresTest.Controllers
         [HttpPost]
         public async Task<IActionResult> Create( string name, Collection model)
         {
+            model.CollectionName = model.CollectionName is null ? "" : model.CollectionName;
+            model.Description = model.Description is null ? "" : model.Description;
+            model.Theme = model.Theme is null ? "Other" : model.Theme;
             ViewBag.Status = await ValidateStatus();
             if (ViewBag.Status == 3 || (User.Identity.Name != name && ViewBag.Status == 2))
             {
@@ -88,7 +91,7 @@ namespace PostgresTest.Controllers
             var user = db.Users.FirstOrDefault(user => user.UserName == name);
             model.User = user;
             model.UserId = user.Id;
-            db.Collections.Add((Collection)model);
+            db.Collections.Add(model);
             db.SaveChanges();
             return Redirect($"/Profile/Index/{name}");
         }
@@ -157,6 +160,9 @@ namespace PostgresTest.Controllers
             Collection coll = db.Collections.FirstOrDefault(col => col.Id == id);
             if (coll != null)
             {
+                collection.CollectionName = collection.CollectionName is null ? "" : collection.CollectionName;
+                collection.Description = collection.Description is null ? "" : collection.Description;
+                collection.Theme = collection.Theme is null ? "Other" : collection.Theme;
                 coll.Image = collection.Image;
                 coll.CollectionName = collection.CollectionName;
                 coll.Theme = collection.Theme;

@@ -147,3 +147,17 @@ body {
     position: absolute;
     min-width: 40%;
 }
+.highlite-1{
+    transition: 1s linear;
+    font-weight:600;
+}
+.highlite:hover{
+    color:mediumblue;
+}
+.tag {
+    align-content:center;
+    border-radius:0.5rem;
+    border:2px solid green;
+    margin: 5px;
+    padding:3px;
+}

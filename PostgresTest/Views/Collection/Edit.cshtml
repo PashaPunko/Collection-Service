@@ -14,7 +14,7 @@
             <div class="row mb-3 justify-content-center align-items-center">
                 <label class="col-4 control-label">Tags</label>
                 <div class="col-7">
-                    <input class="form-control" placeholder="Tags" asp-for="TagString" value="@Model.TagString" />
+                    <input class="form-control tag-input" placeholder="Tags" asp-for="TagString" value="@Model.TagString" />
                 </div>
             </div>
             @for (int j = 0; j < Model.optFields[0].Count; j++)
@@ -22,25 +22,29 @@
                 <div class="row mb-3 justify-content-center align-items-center">
                     <label class="col-4 control-label">@Model.optFields[0][j]</label>
                     <div class="col-7">
-                        <input class="form-control" placeholder="@Model.optFields[0][j]" asp-for="Item.DigitFields[j].Digit" value="@Model.Item.DigitFields[j].Digit"/>
+                        <input class="form-control" placeholder="@Model.optFields[0][j]" asp-for="Item.DigitFields[j].Digit" value="@Model.Item.DigitFields[j].Digit" />
                     </div>
                 </div>
             }
             @for (int j = 0; j < Model.optFields[1].Count; j++)
             {
-                <div class="row mb-3 justify-content-center align-items-center">
-                    <label class="col-4 control-label">@Model.optFields[1][j]</label>
-                    <div class="col-7">
-                        <input class="form-control" placeholder="@Model.optFields[1][j]" asp-for="Item.TextFields[j].Text" value="@Model.Item.TextFields[j].Text"/>
-                    </div>
-                </div>
+        <div class="row mb-3 justify-content-center align-items-center">
+            <label class="col-4 control-label">@Model.optFields[1][j]</label>
+            <div class="col-4">
+                <textarea class="markdown-@j form-control" placeholder="@Model.optFields[1][j]" asp-for="Item.TextFields[j].Text">
+                    @Model.Item.TextFields[j].Text
+                </textarea>
+            </div>
+            <div class="col-3" id="markdown-show-@j">
+            </div>
+        </div>
             }
             @for (int j = 0; j < Model.optFields[2].Count; j++)
             {
                 <div class="row mb-3 justify-content-center align-items-center">
                     <label class="col-4 control-label">@Model.optFields[2][j]</label>
                     <div class="col-7">
-                        <input class="form-control" placeholder="@Model.optFields[2][j]" asp-for="Item.WordFields[j].Word" value="@Model.Item.WordFields[j].Word"/>
+                        <input class="form-control" placeholder="@Model.optFields[2][j]" asp-for="Item.WordFields[j].Word" value="@Model.Item.WordFields[j].Word" />
                     </div>
                 </div>
             }
@@ -49,7 +53,7 @@
                 <div class="row mb-3 justify-content-center align-items-center">
                     <label class="col-4 control-label">@Model.optFields[3][j]</label>
                     <div class="col-7">
-                        <input class="form-control" placeholder="@Model.optFields[3][j]" asp-for="Item.DateFields[j].Date" value="@Model.Item.DateFields[j].Date"/>
+                        <input type="datetime-local" class="form-control" placeholder="@Model.optFields[3][j]" asp-for="Item.DateFields[j].Date" value="@Model.Item.DateFields[j].Date.ToString("yyyy-MM-ddThh:mm")" />
                     </div>
                 </div>
             }
@@ -76,5 +80,21 @@
         </div>
     </form>
 </div>
+<script src="~/lib/yaireo/tagify/dist/tagify.min.js"></script>
+<script src="~/lib/markdown/lib/markdown.js"></script>
 <script>
+    for (let j = 0; j < @Model.optFields[1].Count; j++) {
+        document.querySelector(`#markdown-show-${j}`).innerHTML = markdown.toHTML(document.querySelector(`.markdown-${j}`).value)
+        document.querySelector(`.markdown-${j}`).addEventListener('change', function () {
+                document.querySelector(`#markdown-show-${j}`).innerHTML = markdown.toHTML(document.querySelector(`.markdown-${j}`).value)
+    });
+    }
+    
+
+
+    possibleTags = "@Model.Tags".split(' ');
+    let tagify = new Tagify(document.querySelector('.tag-input'), {
+        originalInputValueFormat: valuesArr => valuesArr.map(item => item.value).join(' '),
+        whitelist: possibleTags,
+    })
 </script>
