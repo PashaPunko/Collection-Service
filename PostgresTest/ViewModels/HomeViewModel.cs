@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using PostgresTest.Models;
+using UserCollections.Models;
 using System.Collections.Generic;
 
-namespace PostgresTest.ViewModels
+namespace UserCollections.ViewModels
 {
     public class ConstantValues
     {

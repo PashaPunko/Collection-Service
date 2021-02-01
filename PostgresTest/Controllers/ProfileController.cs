@@ -5,15 +5,15 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using PostgresTest.Models;
-using PostgresTest.ViewModels;
+using UserCollections.Models;
+using UserCollections.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Http;
 using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
 
-namespace PostgresTest.Controllers
+namespace UserCollections.Controllers
 {
     [Route("[controller]")]
     public class ProfileController : Controller
@@ -21,7 +21,9 @@ namespace PostgresTest.Controllers
         private ApplicationContext db;
         private UserManager<User> userManager;
         private SignInManager<User> signInManager;
-        public ProfileController(ApplicationContext context, UserManager<User> userManager, SignInManager<User> signInManager)
+        public ProfileController(ApplicationContext context, 
+                                 UserManager<User> userManager, 
+                                 SignInManager<User> signInManager)
         {
             db = context;
             this.userManager = userManager;

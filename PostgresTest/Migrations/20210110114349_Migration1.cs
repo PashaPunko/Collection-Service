@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace PostgresTest.Migrations
+namespace UserCollections.Migrations
 {
     public partial class Migration1 : Migration
     {

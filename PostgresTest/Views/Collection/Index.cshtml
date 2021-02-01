@@ -1,4 +1,4 @@
-﻿@model PostgresTest.ViewModels.CollectionViewModel
+﻿@model UserCollections.ViewModels.CollectionViewModel
 @{
     ViewBag.Title = "Список пользователей";
 }
@@ -29,9 +29,14 @@
                     <div class="col">
                         <div id="1-sort"><p style="white-space:nowrap" class="m-0">Name<i class="fa fa-chevron-down col-1" aria-hidden="true"></i></p></div>
                         <div id="1-filter" class="customerTooltip">
-                            <div class="auth-form row-col-8 p-3">
+                            <div class="auth-form col-md-8 col-lg-6 col-10 p-3">
                                 <div class="row table-filters">
-                                    <input type="text" class="form-control" name="1-filter-input">
+                                    <div class="row mb-2 justify-content-center align-items-center">
+                                        <label class="col-4 control-label">Contains</label>
+                                        <div class="col-8">
+                                            <input type="text" class="form-control" name="1-filter-input"/>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="row justify-content-around">
                                     <button class="btn btn-sm btn-success m-2 col-5" id="1-filter-exec">Execute Filter</button>
@@ -46,9 +51,14 @@
                     <div class="col">
                         <div id="2-sort"><p style="white-space:nowrap" class="m-0">Tags<i class="fa fa-chevron-down col-1" aria-hidden="true"></i></p></div>
                         <div id="2-filter" class="customerTooltip">
-                            <div class="auth-form row-col-8 p-3">
+                            <div class="auth-form col-md-8 col-lg-6 col-10  p-3">
                                 <div class="row  table-filters">
-                                    <input type="text" class="form-control" name="2-filter-input">
+                                    <div class="row mb-2 justify-content-center align-items-center">
+                                        <label class="col-4 control-label">Contains</label>
+                                        <div class="col-8">
+                                            <input type="text" class="form-control" name="2-filter-input" />
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="row justify-content-around">
                                     <button class="btn btn-sm btn-success m-2 col-5" id="2-filter-exec">Execute Filter</button>
@@ -70,11 +80,20 @@
                                 </p>
                             </div>
                             <div id="@j-filter" class="customerTooltip">
-                                <div class="auth-form row-col-8 p-3">
+                                <div class="auth-form col-md-8 col-lg-6 col-10 p-3">
                                     <div class="row  table-filters">
-                                        <input type="number" class="form-control" placeholder="Form" name="@j-filter-input">
-                                        <input type="number" class="form-control" placeholder="To" name="@j-filter-input">
-
+                                        <div class="row mb-2 justify-content-center align-items-center">
+                                            <label class="col-4 control-label">From</label>
+                                            <div class="col-8">
+                                                <input type="number" class="form-control" name="@j-filter-input">
+                                            </div>
+                                        </div>
+                                        <div class="row justify-content-center align-items-center">
+                                            <label class="col-4 control-label">To</label>
+                                            <div class="col-8">
+                                                <input type="number" class="form-control" name="@j-filter-input">
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="row justify-content-around">
                                         <button class="btn btn-sm btn-success m-2 col-5" id="@j-filter-exec">Execute Filter</button>
@@ -97,9 +116,14 @@
                                 </p>
                             </div>
                             <div id="@j-filter" class="customerTooltip">
-                                <div class="auth-form row-col-8 p-3">
+                                <div class="auth-form col-md-8 col-lg-6 col-10 p-3">
                                     <div class="row  table-filters">
-                                        <input type="text" class="form-control" name="@j-filter-input">
+                                        <div class="row justify-content-center align-items-center">
+                                            <label class="col-4 control-label">Contains</label>
+                                            <div class="col-8">
+                                                <input type="text" class="form-control" name="@j-filter-input">
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="row justify-content-around">
                                         <button class="btn btn-sm btn-success m-2 col-5" id="@j-filter-exec">Execute Filter</button>
@@ -122,9 +146,14 @@
                                 </p>
                             </div>
                             <div id="@j-filter" class="customerTooltip">
-                                <div class="auth-form row-col-8 p-3">
+                                <div class="auth-form col-md-8 col-lg-6 col-10 p-3">
                                     <div class="row  table-filters">
-                                        <input type="text" class="form-control" name="@j-filter-input">
+                                        <div class="row justify-content-center align-items-center">
+                                            <label class="col-4 control-label">Contains</label>
+                                            <div class="col-8">
+                                                <input type="text" class="form-control" name="@j-filter-input">
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="row justify-content-around">
                                         <button class="btn btn-sm btn-success m-2 col-5" id="@j-filter-exec">Execute Filter</button>
@@ -147,10 +176,20 @@
                                 </p>
                             </div>
                             <div id="@j-filter" class="customerTooltip">
-                                <div class="auth-form row-col-8 p-3">
+                                <div class="auth-form col-md-8 col-lg-6 col-10 p-3">
                                     <div class="row  table-filters">
-                                        <input type="datetime-local" class="form-control" name="@j-filter-input">
-                                        <input type="datetime-local" class="form-control" name="@j-filter-input">
+                                        <div class="row mb-2 justify-content-center align-items-center">
+                                            <label class="col-4 control-label">From</label>
+                                            <div class="col-8">
+                                                <input type="datetime-local" class="form-control" placeholder="From" name="@j-filter-input">
+                                            </div>
+                                        </div>
+                                        <div class="row justify-content-center align-items-center">
+                                            <label class="col-4 control-label">To</label>
+                                            <div class="col-8">
+                                                <input type="datetime-local" class="form-control" placeholder="To" name="@j-filter-input">
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="row justify-content-around">
                                         <button class="btn btn-sm btn-success m-2 col-5" id="@j-filter-exec">Execute Filter</button>
@@ -173,13 +212,18 @@
                                 </p>
                             </div>
                             <div id="@j-filter" class="customerTooltip">
-                                <div class="auth-form row-col-8 p-3">
+                                <div class="auth-form col-md-8 col-lg-6 col-10 p-3">
                                     <div class="row  table-filters">
-                                        <select name="@j-filter-input">
-                                            <option value="All" selected>All</option>
-                                            <option value="Yes">Checked</option>
-                                            <option value="No">Unchecked</option>
-                                        </select>
+                                        <div class="row mb-2 justify-content-center align-items-center">
+                                            <label class="col-4 control-label">Select</label>
+                                            <div class="col-8">
+                                                <select name="@j-filter-input" class="form-select">
+                                                    <option value="All" selected>All</option>
+                                                    <option value="Yes">Checked</option>
+                                                    <option value="No">Unchecked</option>
+                                                </select>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="row justify-content-around">
                                         <button class="btn btn-sm btn-success m-2 col-5" id="@j-filter-exec">Execute Filter</button>

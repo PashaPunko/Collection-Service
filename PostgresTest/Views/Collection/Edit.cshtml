@@ -1,4 +1,4 @@
-﻿@model PostgresTest.ViewModels.ItemViewModel
+﻿@model UserCollections.ViewModels.ItemViewModel
 @{
     ViewBag.Title = "Список пользователей";
 }
@@ -89,9 +89,6 @@
                 document.querySelector(`#markdown-show-${j}`).innerHTML = markdown.toHTML(document.querySelector(`.markdown-${j}`).value)
     });
     }
-    
-
-
     possibleTags = "@Model.Tags".split(' ');
     let tagify = new Tagify(document.querySelector('.tag-input'), {
         originalInputValueFormat: valuesArr => valuesArr.map(item => item.value).join(' '),

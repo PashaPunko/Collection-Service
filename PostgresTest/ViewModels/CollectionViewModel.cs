@@ -1,11 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using PostgresTest.Models;
+using UserCollections.Models;
 using System.Collections.Generic;
 using System.Collections;
 using System;
 using System.Linq;
 
-namespace PostgresTest.ViewModels
+namespace UserCollections.ViewModels
 {
     public class CollectionViewModel
     {

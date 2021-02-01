@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 
-namespace PostgresTest.Models
+namespace UserCollections.Models
 {
     public class UserViewModel
     {

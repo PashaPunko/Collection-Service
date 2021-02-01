@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using PostgresTest.Models;
+using UserCollections.Models;
 using System.Collections.Generic;
 using CloudinaryDotNet;
 
-namespace PostgresTest
+namespace UserCollections
 {
     public static class ApplicationConstants {
         public static List<string> Themes { get; set; } = new List<string> {"Books", "Food", "Drinks", 

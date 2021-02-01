@@ -5,12 +5,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using PostgresTest.Models;
-using PostgresTest.ViewModels;
+using UserCollections.Models;
+using UserCollections.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
-namespace PostgresTest.Controllers
+namespace UserCollections.Controllers
 {
     [Route("[controller]")]
     [Authorize(Roles = "Admin")]
@@ -20,7 +20,10 @@ namespace PostgresTest.Controllers
         private UserManager<User> userManager;
         private SignInManager<User> signInManager;
         private ApplicationContext bd;
-        public AdminController(RoleManager<IdentityRole> roleManager, UserManager<User> userManager, SignInManager<User> signInManager, ApplicationContext bd)
+        public AdminController(RoleManager<IdentityRole> roleManager, 
+                              UserManager<User> userManager, 
+                              SignInManager<User> signInManager, 
+                              ApplicationContext bd)
         {
             this.roleManager = roleManager;
             this.userManager = userManager;

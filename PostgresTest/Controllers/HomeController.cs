@@ -5,20 +5,22 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using PostgresTest.Models;
-using PostgresTest.ViewModels;
+using UserCollections.Models;
+using UserCollections.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using CloudinaryDotNet;
 
-namespace PostgresTest.Controllers
+namespace UserCollections.Controllers
 {
     public class HomeController : Controller
     {
         private ApplicationContext db;
         private UserManager<User> userManager;
         private SignInManager<User> signInManager;
-        public HomeController(ApplicationContext context, UserManager<User> userManager, SignInManager<User> signInManager)
+        public HomeController(ApplicationContext context, 
+                              UserManager<User> userManager, 
+                              SignInManager<User> signInManager)
         {
             db = context;
             this.userManager = userManager;

@@ -2,12 +2,12 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Collections;
 using System.Linq;
-using PostgresTest.ViewModels;
-using PostgresTest.Models;
+using UserCollections.ViewModels;
+using UserCollections.Models;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 
-namespace PostgresTest.Controllers
+namespace UserCollections.Controllers
 {
     public class AccountController : Controller
     {

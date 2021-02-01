@@ -1,4 +1,4 @@
-﻿@model PostgresTest.ViewModels.ItemViewModel
+﻿@model UserCollections.ViewModels.ItemViewModel
 @{
     ViewBag.Title = "Список пользователей";
 }
@@ -9,7 +9,7 @@
                 <h3 class="text-center">@Model.Item.Name</h3>
             </div>
             <div class="col-sm-4 m-3 justify-content-center align-items-center">
-                <div>
+                <div style="line-height:300%;">
                     @for (int j = 0; j < Model.Item.Tags.Count; j++)
                     {
                     <span class="tag">@Model.Item.Tags[j].Text</span>

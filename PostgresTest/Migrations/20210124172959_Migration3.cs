@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Migrations;
 using NpgsqlTypes;
 
-namespace PostgresTest.Migrations
+namespace UserCollections.Migrations
 {
     public partial class Migration3 : Migration
     {

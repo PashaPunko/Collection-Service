@@ -6,9 +6,9 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using NpgsqlTypes;
-using PostgresTest.Models;
+using UserCollections.Models;
 
-namespace PostgresTest.Migrations
+namespace UserCollections.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
     partial class ApplicationContextModelSnapshot : ModelSnapshot
@@ -151,7 +151,7 @@ namespace PostgresTest.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("PostgresTest.Models.CheckboxField", b =>
+            modelBuilder.Entity("UserCollections.Models.CheckboxField", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -171,7 +171,7 @@ namespace PostgresTest.Migrations
                     b.ToTable("CheckboxFields");
                 });
 
-            modelBuilder.Entity("PostgresTest.Models.Collection", b =>
+            modelBuilder.Entity("UserCollections.Models.Collection", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -212,7 +212,7 @@ namespace PostgresTest.Migrations
                     b.ToTable("Collections");
                 });
 
-            modelBuilder.Entity("PostgresTest.Models.Comment", b =>
+            modelBuilder.Entity("UserCollections.Models.Comment", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -244,7 +244,7 @@ namespace PostgresTest.Migrations
                     b.ToTable("Comments");
                 });
 
-            modelBuilder.Entity("PostgresTest.Models.DateField", b =>
+            modelBuilder.Entity("UserCollections.Models.DateField", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -264,7 +264,7 @@ namespace PostgresTest.Migrations
                     b.ToTable("DateFields");
                 });
 
-            modelBuilder.Entity("PostgresTest.Models.DigitField", b =>
+            modelBuilder.Entity("UserCollections.Models.DigitField", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -284,7 +284,7 @@ namespace PostgresTest.Migrations
                     b.ToTable("DigitFields");
                 });
 
-            modelBuilder.Entity("PostgresTest.Models.Item", b =>
+            modelBuilder.Entity("UserCollections.Models.Item", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -316,7 +316,7 @@ namespace PostgresTest.Migrations
                     b.ToTable("Items");
                 });
 
-            modelBuilder.Entity("PostgresTest.Models.Like", b =>
+            modelBuilder.Entity("UserCollections.Models.Like", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -336,7 +336,7 @@ namespace PostgresTest.Migrations
                     b.ToTable("Likes");
                 });
 
-            modelBuilder.Entity("PostgresTest.Models.Tag", b =>
+            modelBuilder.Entity("UserCollections.Models.Tag", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -365,7 +365,7 @@ namespace PostgresTest.Migrations
                     b.ToTable("Tags");
                 });
 
-            modelBuilder.Entity("PostgresTest.Models.TextField", b =>
+            modelBuilder.Entity("UserCollections.Models.TextField", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -394,7 +394,7 @@ namespace PostgresTest.Migrations
                     b.ToTable("TextFields");
                 });
 
-            modelBuilder.Entity("PostgresTest.Models.User", b =>
+            modelBuilder.Entity("UserCollections.Models.User", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("text");
@@ -458,7 +458,7 @@ namespace PostgresTest.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("PostgresTest.Models.WordField", b =>
+            modelBuilder.Entity("UserCollections.Models.WordField", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -498,7 +498,7 @@ namespace PostgresTest.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("PostgresTest.Models.User", null)
+                    b.HasOne("UserCollections.Models.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -507,7 +507,7 @@ namespace PostgresTest.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("PostgresTest.Models.User", null)
+                    b.HasOne("UserCollections.Models.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -522,7 +522,7 @@ namespace PostgresTest.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("PostgresTest.Models.User", null)
+                    b.HasOne("UserCollections.Models.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -531,16 +531,16 @@ namespace PostgresTest.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("PostgresTest.Models.User", null)
+                    b.HasOne("UserCollections.Models.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("PostgresTest.Models.CheckboxField", b =>
+            modelBuilder.Entity("UserCollections.Models.CheckboxField", b =>
                 {
-                    b.HasOne("PostgresTest.Models.Item", "Item")
+                    b.HasOne("UserCollections.Models.Item", "Item")
                         .WithMany("CheckboxFields")
                         .HasForeignKey("ItemId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -549,18 +549,18 @@ namespace PostgresTest.Migrations
                     b.Navigation("Item");
                 });
 
-            modelBuilder.Entity("PostgresTest.Models.Collection", b =>
+            modelBuilder.Entity("UserCollections.Models.Collection", b =>
                 {
-                    b.HasOne("PostgresTest.Models.User", "User")
+                    b.HasOne("UserCollections.Models.User", "User")
                         .WithMany("Collections")
                         .HasForeignKey("UserId");
 
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("PostgresTest.Models.Comment", b =>
+            modelBuilder.Entity("UserCollections.Models.Comment", b =>
                 {
-                    b.HasOne("PostgresTest.Models.Item", "Item")
+                    b.HasOne("UserCollections.Models.Item", "Item")
                         .WithMany("Comments")
                         .HasForeignKey("ItemId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -569,9 +569,9 @@ namespace PostgresTest.Migrations
                     b.Navigation("Item");
                 });
 
-            modelBuilder.Entity("PostgresTest.Models.DateField", b =>
+            modelBuilder.Entity("UserCollections.Models.DateField", b =>
                 {
-                    b.HasOne("PostgresTest.Models.Item", "Item")
+                    b.HasOne("UserCollections.Models.Item", "Item")
                         .WithMany("DateFields")
                         .HasForeignKey("ItemId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -580,9 +580,9 @@ namespace PostgresTest.Migrations
                     b.Navigation("Item");
                 });
 
-            modelBuilder.Entity("PostgresTest.Models.DigitField", b =>
+            modelBuilder.Entity("UserCollections.Models.DigitField", b =>
                 {
-                    b.HasOne("PostgresTest.Models.Item", "Item")
+                    b.HasOne("UserCollections.Models.Item", "Item")
                         .WithMany("DigitFields")
                         .HasForeignKey("ItemId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -591,9 +591,9 @@ namespace PostgresTest.Migrations
                     b.Navigation("Item");
                 });
 
-            modelBuilder.Entity("PostgresTest.Models.Item", b =>
+            modelBuilder.Entity("UserCollections.Models.Item", b =>
                 {
-                    b.HasOne("PostgresTest.Models.Collection", "Collection")
+                    b.HasOne("UserCollections.Models.Collection", "Collection")
                         .WithMany("Items")
                         .HasForeignKey("CollectionId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -602,9 +602,9 @@ namespace PostgresTest.Migrations
                     b.Navigation("Collection");
                 });
 
-            modelBuilder.Entity("PostgresTest.Models.Like", b =>
+            modelBuilder.Entity("UserCollections.Models.Like", b =>
                 {
-                    b.HasOne("PostgresTest.Models.Item", "Item")
+                    b.HasOne("UserCollections.Models.Item", "Item")
                         .WithMany("Likes")
                         .HasForeignKey("ItemId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -613,9 +613,9 @@ namespace PostgresTest.Migrations
                     b.Navigation("Item");
                 });
 
-            modelBuilder.Entity("PostgresTest.Models.Tag", b =>
+            modelBuilder.Entity("UserCollections.Models.Tag", b =>
                 {
-                    b.HasOne("PostgresTest.Models.Item", "Item")
+                    b.HasOne("UserCollections.Models.Item", "Item")
                         .WithMany("Tags")
                         .HasForeignKey("ItemId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -624,9 +624,9 @@ namespace PostgresTest.Migrations
                     b.Navigation("Item");
                 });
 
-            modelBuilder.Entity("PostgresTest.Models.TextField", b =>
+            modelBuilder.Entity("UserCollections.Models.TextField", b =>
                 {
-                    b.HasOne("PostgresTest.Models.Item", "Item")
+                    b.HasOne("UserCollections.Models.Item", "Item")
                         .WithMany("TextFields")
                         .HasForeignKey("ItemId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -635,9 +635,9 @@ namespace PostgresTest.Migrations
                     b.Navigation("Item");
                 });
 
-            modelBuilder.Entity("PostgresTest.Models.WordField", b =>
+            modelBuilder.Entity("UserCollections.Models.WordField", b =>
                 {
-                    b.HasOne("PostgresTest.Models.Item", "Item")
+                    b.HasOne("UserCollections.Models.Item", "Item")
                         .WithMany("WordFields")
                         .HasForeignKey("ItemId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -646,12 +646,12 @@ namespace PostgresTest.Migrations
                     b.Navigation("Item");
                 });
 
-            modelBuilder.Entity("PostgresTest.Models.Collection", b =>
+            modelBuilder.Entity("UserCollections.Models.Collection", b =>
                 {
                     b.Navigation("Items");
                 });
 
-            modelBuilder.Entity("PostgresTest.Models.Item", b =>
+            modelBuilder.Entity("UserCollections.Models.Item", b =>
                 {
                     b.Navigation("CheckboxFields");
 
@@ -670,7 +670,7 @@ namespace PostgresTest.Migrations
                     b.Navigation("WordFields");
                 });
 
-            modelBuilder.Entity("PostgresTest.Models.User", b =>
+            modelBuilder.Entity("UserCollections.Models.User", b =>
                 {
                     b.Navigation("Collections");
                 });

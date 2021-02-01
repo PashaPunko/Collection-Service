@@ -5,12 +5,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using PostgresTest.Models;
-using PostgresTest.ViewModels;
+using UserCollections.Models;
+using UserCollections.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 
-namespace PostgresTest.Controllers
+namespace UserCollections.Controllers
 {
     [Route("[controller]")]
     public class SearchController : Controller
@@ -47,27 +47,26 @@ namespace PostgresTest.Controllers
             ViewBag.Status = await ValidateStatus();
             List<Item> model = new List<Item>();
 
-            model.AddRange(db.Items.Where(p => p.SearchVector.Matches(searchString))
-    .ToList());
+            model.AddRange(db.Items.Where(p => p.SearchVector.Matches(searchString)).ToList());
             var collections = db.Collections
-    .Where(p => p.SearchVector.Matches(searchString)).Select(c => c.Items)
-    .ToList();
+                .Where(p => p.SearchVector.Matches(searchString)).Select(c => c.Items)
+                .ToList();
             foreach (var items in collections)
             {
                 model.AddRange(items);
             }
             model.AddRange(db.Comments
-    .Where(p => p.SearchVector.Matches(searchString)).Select(c => c.Item)
-    .ToList());
+                .Where(p => p.SearchVector.Matches(searchString)).Select(c => c.Item)
+                .ToList());
             model.AddRange(db.TextFields
-    .Where(p => p.SearchVector.Matches(searchString)).Select(c => c.Item)
-    .ToList());
+                .Where(p => p.SearchVector.Matches(searchString)).Select(c => c.Item)
+                .ToList());
             model.AddRange(db.WordFields
-    .Where(p => p.SearchVector.Matches(searchString)).Select(c => c.Item)
-    .ToList());
+                .Where(p => p.SearchVector.Matches(searchString)).Select(c => c.Item)
+                .ToList());
             model.AddRange(db.Tags
-    .Where(p => p.SearchVector.Matches(searchString)).Select(c => c.Item)
-    .ToList());
+                .Where(p => p.SearchVector.Matches(searchString)).Select(c => c.Item)
+                .ToList());
             model.ForEach(i =>
             {
                 db.Entry(i).Reference(x => x.Collection).Load();
@@ -84,8 +83,8 @@ namespace PostgresTest.Controllers
             ViewBag.Status = await ValidateStatus();
             List < Item> model = new List<Item>();
             model.AddRange(db.Tags.Include(t => t.Item).ThenInclude(i => i.Collection).ThenInclude(c => c.User)
-    .Where(p => p.SearchVector.Matches(searchString)).Select(c => c.Item)
-    .ToList());
+                .Where(p => p.SearchVector.Matches(searchString)).Select(c => c.Item)
+                .ToList());
             ViewBag.Name = name;
             model = model.Distinct().ToList();
             return View("Index", model);

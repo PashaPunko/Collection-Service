@@ -5,19 +5,19 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using PostgresTest.Models;
-using PostgresTest.ViewModels;
+using UserCollections.Models;
+using UserCollections.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.AspNetCore.Identity;
 
-namespace PostgresTest
+namespace UserCollections
 {
     public class CommentsHub : Hub
     {
     }
 }
-namespace PostgresTest.Controllers
+namespace UserCollections.Controllers
 {
     [Route("[controller]")]
     public class ItemController : Controller
@@ -26,7 +26,10 @@ namespace PostgresTest.Controllers
         private IHubContext<CommentsHub> hubContext;
         private UserManager<User> userManager;
         private SignInManager<User> signInManager;
-        public ItemController(ApplicationContext context, IHubContext<CommentsHub> hubContext, UserManager<User> userManager, SignInManager<User> signInManager)
+        public ItemController(ApplicationContext context, 
+                              IHubContext<CommentsHub> hubContext, 
+                              UserManager<User> userManager, 
+                              SignInManager<User> signInManager)
         {
             db = context;
             this.hubContext = hubContext;

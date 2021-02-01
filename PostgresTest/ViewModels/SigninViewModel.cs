@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace PostgresTest.ViewModels
+namespace UserCollections.ViewModels
 {
     public class SigninViewModel
     {

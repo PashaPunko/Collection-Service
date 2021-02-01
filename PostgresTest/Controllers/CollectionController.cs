@@ -5,12 +5,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using PostgresTest.Models;
-using PostgresTest.ViewModels;
+using UserCollections.Models;
+using UserCollections.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 
-namespace PostgresTest.Controllers
+namespace UserCollections.Controllers
 {
     [Route("[controller]")]
     public class CollectionController : Controller
@@ -18,7 +18,9 @@ namespace PostgresTest.Controllers
         private ApplicationContext db;
         private UserManager<User> userManager;
         private SignInManager<User> signInManager;
-        public CollectionController(ApplicationContext context, UserManager<User> userManager, SignInManager<User> signInManager)
+        public CollectionController(ApplicationContext context, 
+                                    UserManager<User> userManager, 
+                                    SignInManager<User> signInManager)
         {
             db = context;
             this.userManager = userManager;
@@ -232,25 +234,25 @@ namespace PostgresTest.Controllers
                         tags.Add(new Tag { Item = item, ItemId = item.Id, Text = el });
                 }
                 db.Tags.AddRange(tags);
-                for (int i = 0; i < model.Item.TextFields.Count; i++)
+                foreach (var field in model.Item.TextFields)
                 {
-                    item.TextFields[i].Text = model.Item.TextFields[i].Text is null ? "" : model.Item.TextFields[i].Text;
+                    field.Text = field.Text is null ? "" : field.Text;
                 }
-                for (int i = 0; i < model.Item.DigitFields.Count; i++)
+                foreach (var field in model.Item.DigitFields)
                 {
-                    item.DigitFields[i].Digit = model.Item.DigitFields[i].Digit;
+                    field.Digit = field.Digit;
                 }
-                for (int i = 0; i < model.Item.WordFields.Count; i++)
+                foreach (var field in model.Item.WordFields)
                 {
-                    item.WordFields[i].Word = model.Item.WordFields[i].Word is null ? "" : model.Item.WordFields[i].Word;
+                    field.Word = field.Word is null ? "" : field.Word;
                 }
-                for (int i = 0; i < model.Item.DateFields.Count; i++)
+                foreach (var field in model.Item.DateFields)
                 {
-                    item.DateFields[i].Date = model.Item.DateFields[i].Date;
+                    field.Date = field.Date;
                 }
-                for (int i = 0; i < model.Item.CheckboxFields.Count; i++)
+                foreach (var field in model.Item.CheckboxFields)
                 {
-                    item.CheckboxFields[i].Checkbox = model.Item.CheckboxFields[i].Checkbox;
+                    field.Checkbox = field.Checkbox;
                 }
                 db.SaveChanges();
                 return Redirect($"/Collection/Index/{id}/{name}");
